@@ -68,7 +68,16 @@ export default class AsistenLapak extends Component{
             id: 3,
             name: "Other"
         }
-        ]
+        ],
+
+        reqProduct: "",
+        stock: "",
+        specialReq: "",
+        orderNum: "",
+        nameOfCustomer: "",
+        customerPhone: "",
+        customerAdd: "",
+        nearCourier: ""
     }
 
     checkRadio(name){
@@ -100,7 +109,7 @@ export default class AsistenLapak extends Component{
     render(){
         return(
             <Container>
-                <Header>
+                <Header style={styles.mainColor} androidStatusBarColor="#b4424b">
                     <Body>
                         <Title>
                             Buat Transaksi
@@ -111,22 +120,22 @@ export default class AsistenLapak extends Component{
                 <Form>
                     <Label style={styles.batasAtas}>Produk Pesanan</Label>
                     <Item regular>
-                        <Input />
+                        <Input onChangeText={(text) => this.setState({reqProduct: text})}/>
                     </Item>
 
                     <Label style={styles.batasAtas}>Stock Availability</Label>
                     <Item regular>
-                        <Input />
+                        <Input onChangeText={(text) => this.setState({stock: text})}/>
                     </Item>
 
                     <Label style={styles.batasAtas}>Special Request</Label>
                     <Item regular>
-                        <Input />
+                        <Input onChangeText={(text) => this.setState({specialReq: text})}/>
                     </Item>
                     
                     <Label style={styles.batasAtas}>Order Number</Label>
                     <Item regular>
-                        <Input />
+                        <Input onChangeText={(text) => this.setState({orderNum: text})}/>
                     </Item>
                     
                     <Label style={styles.batasAtas}>Type of Shipping</Label>
@@ -157,33 +166,42 @@ export default class AsistenLapak extends Component{
 
                     <Label style={styles.batasAtas}>Name of Customer</Label>
                     <Item regular>
-                        <Input />
+                        <Input onChangeText={(text) => this.setState({nameOfCustomer: text})}/>
                     </Item>
 
                     <Label style={styles.batasAtas}>Customer Phone Number</Label>
                     <Item regular>
-                        <Input />
+                        <Input onChangeText={(text) => this.setState({customerPhone: text})}/>
                     </Item>
 
                     <Label style={styles.batasAtas}>Customer Address</Label>
-                    <Textarea rowSpan={5} bordered/>
+                    <Textarea rowSpan={5} bordered onChangeText={(text) => this.setState({customerAdd: text})}/>
 
                     <Label style={styles.batasAtas}>Nearest Courier Location</Label>
                     <Item regular>
-                        <Input />
+                        <Input onChangeText={(text) => this.setState({nearCourier: text})} />
                     </Item>
                     
-                    <ListItem>
-                        <Button style={styles.buttone}>
-                            <Text style={styles.labelBtn}>Kirim</Text>
+                    <ListItem style={{alignSelf:'center', justifyContent:'center'}}>
+                        <Button style={styles.buttone} onPress={()=> this.props.navigation.navigate('RoutePassingAsisten', {data: {
+                                reqProduct: this.state.reqProduct,
+                                stock: this.state.stock,
+                                specialReq: this.state.specialReq,
+                                orderNum: this.state.orderNum,
+                                nameOfCustomer: this.state.nameOfCustomer,
+                                customerPhone: this.state.customerPhone,
+                                customerAdd: this.state.customerAdd,
+                                nearCourier: this.state.nearCourier
+                            }})}>
+                            <Text style={{marginLeft: 45}}>Kirim</Text>
                         </Button>
                     </ListItem>
                 </Form>
                 </Content>
 
-                <Footer>
-                    <FooterTab>
-                        <Button active>
+                <Footer style={styles.mainColor}>
+                    <FooterTab style={styles.mainColor}>
+                        <Button >
                             <Icon name="home" />
                         </Button>
                         <Button>
@@ -193,7 +211,7 @@ export default class AsistenLapak extends Component{
                             <Icon name="settings" />
                         </Button>
                     </FooterTab>
-                </Footer>
+              </Footer>
             </Container>
         )
     }
@@ -201,9 +219,8 @@ export default class AsistenLapak extends Component{
 
 const styles = StyleSheet.create({
     buttone:{
-        width: '70%',
-        height: 40,
-        marginLeft: 43,
+        width: '60%',
+        backgroundColor: "#b4424b"
     },
 
     batasAtas:{
@@ -225,5 +242,9 @@ const styles = StyleSheet.create({
     fileChooser:{
         color: '#156af2',
         marginLeft: -17
+    },
+
+    mainColor:{
+        backgroundColor: '#dd5453'
     }
 })

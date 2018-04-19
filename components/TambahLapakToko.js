@@ -25,7 +25,7 @@ import {
 } from 'native-base'
 import { StyleSheet, View, TouchableOpacity, StatusBar } from 'react-native';
 
-export default class TambahLapak2 extends Component{
+export default class TambahLapakToko extends Component{
 
     state = {
         checkedName: "",
@@ -229,42 +229,22 @@ export default class TambahLapak2 extends Component{
             id: 2,
             name: "Tidak"
         },
-        ]
-    }
+        ],
 
-    onValueChange(value) {
-        this.setState({
-          selected1: value
-        });
-      }
+        marketName: "",
+        slogan: "",
+        description: "",
+        fullAddress: "",
+        city: "",
+        postCode: "",
+        website: "",
+        phone: "",
+        email: "",
+        bankName: "",
+
+    }
 
     checkRadio(name){
-        this.setState({
-            selectedName: name
-        })
-
-        if(this.state.selectedName == name)
-        {
-            this.setState({
-                selectedName: ""
-            })
-        }
-    }
-
-    checkRadio2(name){
-        this.setState({
-            selectedName: name
-        })
-
-        if(this.state.selectedName == name)
-        {
-            this.setState({
-                selectedName: ""
-            })
-        }
-    }
-
-    checkRadio3(name){
         this.setState({
             selectedName: name
         })
@@ -331,12 +311,12 @@ export default class TambahLapak2 extends Component{
                 <Form>
                     <Label>Nama Toko</Label>
                     <Item regular>
-                        <Input />
+                        <Input onChangeText={(text) => this.setState({marketName: text})} />
                     </Item>
 
                     <Label style={styles.batasAtas}>Slogan</Label>
                     <Item regular>
-                        <Input />
+                        <Input onChangeText={(text) => this.setState({slogan: text})} />
                     </Item>
                     
                     <Label style={styles.batasAtas}>Logo Toko</Label>
@@ -345,48 +325,49 @@ export default class TambahLapak2 extends Component{
                     </Button>
 
                     <Label style={styles.batasAtas}>Deskripsi</Label>
-                    <Textarea rowSpan={5} bordered/>
+                    <Textarea rowSpan={5} bordered onChangeText={(text) => this.setState({description: text})}/>
 
                     <Label style={styles.batasAtas}>Alamat Lengkap</Label>
-                    <Textarea rowSpan={5} bordered/>
+                    <Textarea rowSpan={5} bordered onChangeText={(text) => this.setState({fullAddress: text})}/>
 
                     <Label style={styles.batasAtas}>Kota</Label>
                     <Item regular>
-                        <Input />
+                        <Input onChangeText={(text) => this.setState({city: text})}/>
                     </Item>
 
                     <Label style={styles.batasAtas}>Kode Pos</Label>
                     <Item regular>
-                        <Input />
+                        <Input onChangeText={(text) => this.setState({postCode: text})}/>
                     </Item>
 
                     <Label style={styles.batasAtas}>Situs Web</Label>
                     <Item regular>
-                        <Input />
+                        <Input onChangeText={(text) => this.setState({website: text})}/>
                     </Item>
 
                     <Label style={styles.batasAtas}>No Telp</Label>
                     <Item regular>
-                        <Input />
+                        <Input onChangeText={(text) => this.setState({phone: text})}/>
                     </Item>
 
                     <Label style={styles.batasAtas}>Alamat Email</Label>
                     <Item regular>
-                        <Input />
+                        <Input onChangeText={(text) => this.setState({email: text})}/>
                     </Item>
 
                     <Label style={styles.batasAtas}>Nama Bank dan No Rek.</Label>
                     <Item regular>
-                        <Input />
+                        <Input onChangeText={(text) => this.setState({bankName: text})}/>
                     </Item>
 
                     <Label style={styles.batasAtas}>Jenis barang (Kategori)</Label>
 
-                    {this.state.items.map((items, key) => (
+                    {this.state.items.map((item, key) => (
                         <ListItem key={key} style={styles.iteme}>
-                            <CheckBox onPress={() => this.addCheck(items.id)} checked={this.state.check.includes(items.id) ? true : false} color="#dd5453" />
+                            <CheckBox onPress={() => this.addCheck(item.id)} checked={this.state.check.includes(item.id) ? true : false} color="#dd5453" />
                         <Body>
-                            <Label>{item.name}</Label>
+                            <Label style={styles.labelSelect}>{item.name}</Label>
+                            
                         </Body>
                         </ListItem>
                     ))}
@@ -396,8 +377,6 @@ export default class TambahLapak2 extends Component{
                     ))} */}
 
 
-                    
-                    
                     <Label style={styles.batasAtas}>Status Produk (Kategori)</Label>
                     
                     {this.state.items3.map((item, index)=> {
@@ -405,7 +384,7 @@ export default class TambahLapak2 extends Component{
                             <ListItem key={item.name} style={styles.iteme}>
                                 <Radio selected = {item.name == this.state.selectedName ? true : false} onPress={()=> this.checkRadio(item.name)} />
                                 <Body>
-                                    <Label>{item.name}</Label>
+                                    <Label style={styles.labelSelect}>{item.name}</Label>
                                 </Body>
                             </ListItem>
                         )
@@ -413,11 +392,11 @@ export default class TambahLapak2 extends Component{
                     
                     <Label style={styles.batasAtas}>Jasa Pengiriman</Label>
 
-                    {this.state.items2.map((items, key) => (
+                    {this.state.items2.map((item, key) => (
                         <ListItem key={key} style={styles.iteme}>
-                            <CheckBox onPress={() => this.addCheck2(items.id)} checked={this.state.check.includes(items.id) ? true : false} color="#dd5453"/>
+                            <CheckBox onPress={() => this.addCheck2(item.id)} checked={this.state.check.includes(item.id) ? true : false} color="#dd5453"/>
                         <Body>
-                            <Label>{item.name}</Label>
+                            <Label style={styles.labelSelect}>{item.name}</Label>
                         </Body>
                         </ListItem>
                     ))}
@@ -426,71 +405,21 @@ export default class TambahLapak2 extends Component{
                         <Text key={key}>{check}</Text>
                     ))} */}
 
-                    <Label style={styles.batasAtas}>Nama Produk (max 70 karakter)</Label>
-                    <Item regular>
-                        <Input />
-                    </Item>
-
-                    <Label style={styles.batasAtas}>Gambar Produk</Label>
-                    <Button transparent onPress={()=> {alert("Coming Soon")}}>
-                        <Text style={styles.fileChooser}>TAMBAHKAN FILE</Text>
-                    </Button>
-
-                    <Label style={styles.batasAtas}>Harga</Label>
-                    <Item regular>
-                        <Input />
-                    </Item>
-
-                    <Label style={styles.batasAtas}>Pemesanan minimun/buah</Label>
-                    <Item regular>
-                        <Input />
-                    </Item>
-
-                    <Label style={styles.batasAtas}>Kondisi</Label>
-                    
-                    {this.state.items4.map((item, index)=> {
-                        return(
-                            <ListItem key={item.name} style={styles.iteme}>
-                                <Radio selected = {item.name == this.state.selectedName ? true : false} onPress={()=> this.checkRadio2(item.name)} />
-                                <Body>
-                                <Label>{item.name}</Label>
-                                </Body>
-                            </ListItem>
-                        )
-                    } )}
-
-                    <Label style={styles.batasAtas}>Deskripsi Produk</Label>
-                    <Item regular>
-                        <Input />
-                    </Item>
-
-                    <Label style={styles.batasAtas}>Berat (kg)</Label>
-                    <Item regular>
-                        <Input />
-                    </Item>
-
-                    <Label style={styles.batasAtas}>Aktifkan preorder untuk waktu proses produksi yang lebih lama</Label>
-
-                    {this.state.items5.map((item, index)=> {
-                        return(
-                            <ListItem key={item.name} style={styles.iteme}>
-                                <Radio selected = {item.name == this.state.selectedName ? true : false} onPress={()=> this.checkRadio3(item.name)} />
-                                <Body>
-                                <Label>{item.name}</Label>
-                                </Body>
-                            </ListItem>
-                        )
-                    } )}
-
-                    <Label style={styles.batasAtas}>Waktu Proses (wajib diisi untuk mengetahui lama produk diproses)</Label>
-                    <Item regular>
-                        <Input />
-                    </Item>
-
                     <ListItem style={{alignSelf:'center', justifyContent:'center'}}>
-                        <Button style={styles.buttone}>
+                        <Button style={styles.buttone} onPress={()=> this.props.navigation.navigate('RouteNjajalPassing', {data: {
+                                marketName: this.state.marketName,
+                                slogan: this.state.slogan,
+                                description: this.state.description,
+                                fullAddress: this.state.fullAddress,
+                                city: this.state.city,
+                                postCode: this.state.postCode,
+                                website: this.state.website,
+                                phone: this.state.phone,
+                                email: this.state.email,
+                                bankName: this.state.bankName
+                            }})}>
                             <Text style={{marginLeft: 40}}>Submit</Text>
-                        </Button>
+                        </Button> 
                     </ListItem>
                 </Form>
                 </Content>
@@ -525,6 +454,10 @@ const styles = StyleSheet.create({
 
     labelBtn:{
         marginLeft: 55
+    },
+
+    labelSelect:{
+        marginLeft: 20
     },
 
     label:{
