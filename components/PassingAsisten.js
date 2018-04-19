@@ -13,6 +13,9 @@ export default class PassingAsisten extends Component{
 				<Text>{this.props.navigation.state.params.data.customerPhone}</Text>
 				<Text>{this.props.navigation.state.params.data.customerAdd}</Text>
 				<Text>{this.props.navigation.state.params.data.nearCourier}</Text>
+
+                <Text>{this.props.navigation.state.params.data.radio1}</Text>
+                <Text>{this.props.navigation.state.params.data.radio2}</Text>
 			</View>
 		)
 	}

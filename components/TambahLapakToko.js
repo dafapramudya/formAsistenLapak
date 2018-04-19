@@ -163,6 +163,7 @@ export default class TambahLapakToko extends Component{
         ],
 
         check: [],
+        checkk: [],
 
         items2: [{
             id: 1,
@@ -241,12 +242,16 @@ export default class TambahLapakToko extends Component{
         phone: "",
         email: "",
         bankName: "",
+        radio1: "",
+        check1: [],
+        check2: []
 
     }
 
-    checkRadio(name){
+    checkRadio(name, id){
         this.setState({
-            selectedName: name
+            selectedName: name,
+            radio1: id
         })
 
         if(this.state.selectedName == name)
@@ -263,7 +268,8 @@ export default class TambahLapakToko extends Component{
           getCheck = this.state.check
           getCheck.push(set)
           this.setState({
-            check: getCheck
+            check: getCheck,
+            check1: getCheck
           })
         }
     
@@ -279,19 +285,20 @@ export default class TambahLapakToko extends Component{
 
       addCheck2(set) {
 
-        if (!this.state.check.includes(set)) {
-          getCheck = this.state.check
+        if (!this.state.checkk.includes(set)) {
+          getCheck = this.state.checkk
           getCheck.push(set)
           this.setState({
-            check: getCheck
+            checkk: getCheck,
+            check2: getCheck
           })
         }
     
         else{
-            geCheck = this.state.check
+            geCheck = this.state.checkk
             geCheck = geCheck.filter(item => item !== set)
             this.setState({
-              check: geCheck
+                checkk: geCheck
             })
         }
     
@@ -367,7 +374,6 @@ export default class TambahLapakToko extends Component{
                             <CheckBox onPress={() => this.addCheck(item.id)} checked={this.state.check.includes(item.id) ? true : false} color="#dd5453" />
                         <Body>
                             <Label style={styles.labelSelect}>{item.name}</Label>
-                            
                         </Body>
                         </ListItem>
                     ))}
@@ -382,7 +388,7 @@ export default class TambahLapakToko extends Component{
                     {this.state.items3.map((item, index)=> {
                         return(
                             <ListItem key={item.name} style={styles.iteme}>
-                                <Radio selected = {item.name == this.state.selectedName ? true : false} onPress={()=> this.checkRadio(item.name)} />
+                                <Radio selected = {item.name == this.state.selectedName ? true : false} onPress={()=> this.checkRadio(item.name, item.id)} />
                                 <Body>
                                     <Label style={styles.labelSelect}>{item.name}</Label>
                                 </Body>
@@ -394,7 +400,7 @@ export default class TambahLapakToko extends Component{
 
                     {this.state.items2.map((item, key) => (
                         <ListItem key={key} style={styles.iteme}>
-                            <CheckBox onPress={() => this.addCheck2(item.id)} checked={this.state.check.includes(item.id) ? true : false} color="#dd5453"/>
+                            <CheckBox onPress={() => this.addCheck2(item.id)} checked={this.state.checkk.includes(item.id) ? true : false} color="#dd5453"/>
                         <Body>
                             <Label style={styles.labelSelect}>{item.name}</Label>
                         </Body>
@@ -416,7 +422,10 @@ export default class TambahLapakToko extends Component{
                                 website: this.state.website,
                                 phone: this.state.phone,
                                 email: this.state.email,
-                                bankName: this.state.bankName
+                                bankName: this.state.bankName,
+                                radio1: this.state.radio1,
+                                check1: this.state.check1,
+                                check2: this.state.check2,
                             }})}>
                             <Text style={{marginLeft: 40}}>Submit</Text>
                         </Button> 

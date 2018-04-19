@@ -32,6 +32,7 @@ export default class TambahLapak6 extends Component {
         conditione: false,
         checkedName2: "",
         selectedName: "",
+        selectedName2: "",
         items4: [{
             id: 1,
             name: "Baru"
@@ -57,16 +58,19 @@ export default class TambahLapak6 extends Component {
         request: "",
         descProduct: "",
         weight: "",
-        time: ""
+        time: "",
+        radio1: "",
+        radio2: ""
     }
 
     handleButtonPress() {
         this.setState({checkBoxStatus: !this.state.checkBoxStatus});
     }
 
-    checkRadio(name){
+    checkRadio(name, id){
         this.setState({
-            selectedName: name
+            selectedName: name,
+            radio1: id
         })
 
         if(this.state.selectedName == name)
@@ -77,45 +81,19 @@ export default class TambahLapak6 extends Component {
         }
     }
 
-    addCheck(set) {
+    checkRadio2(name, id){
+        this.setState({
+            selectedName2: name,
+            radio2: id
+        })
 
-        if (!this.state.check.includes(set)) {
-          getCheck = this.state.check
-          getCheck.push(set)
-          this.setState({
-            check: getCheck
-          })
-        }
-    
-        else{
-            geCheck = this.state.check
-            geCheck = geCheck.filter(item => item !== set)
+        if(this.state.selectedName2 == name)
+        {
             this.setState({
-              check: geCheck
+                selectedName2: ""
             })
         }
-    
-      }
-
-      addCheck2(set) {
-
-        if (!this.state.check.includes(set)) {
-          getCheck = this.state.check
-          getCheck.push(set)
-          this.setState({
-            check: getCheck
-          })
-        }
-    
-        else{
-            geCheck = this.state.check
-            geCheck = geCheck.filter(item => item !== set)
-            this.setState({
-              check: geCheck
-            })
-        }
-    
-      }
+    }
 
     render() {
     return (
@@ -123,7 +101,7 @@ export default class TambahLapak6 extends Component {
             <Header style={styles.mainColor} androidStatusBarColor="#b4424b">
                 <Body>
                     <Title>
-                        Tambah Lapak
+                        Tambah Produk
                     </Title>
                 </Body>
             </Header>
@@ -179,7 +157,7 @@ export default class TambahLapak6 extends Component {
                         {this.state.items4.map((item, index)=> {
                             return(
                                 <ListItem key={item.name} style={styles.iteme}>
-                                    <Radio selected = {item.name == this.state.selectedName ? true : false} onPress={()=> this.checkRadio2(item.name)} />
+                                    <Radio selected = {item.name == this.state.selectedName ? true : false} onPress={()=> this.checkRadio(item.name, item.id)} />
                                     <Body>
                                         <Label style={styles.labelSelect}>{item.name}</Label>
                                     </Body>
@@ -202,7 +180,7 @@ export default class TambahLapak6 extends Component {
                         {this.state.items5.map((item, index)=> {
                             return(
                                 <ListItem key={item.name} style={styles.iteme}>
-                                    <Radio selected = {item.name == this.state.selectedName ? true : false} onPress={()=> this.checkRadio3(item.name)} />
+                                    <Radio selected = {item.name == this.state.selectedName2 ? true : false} onPress={()=> this.checkRadio2(item.name, item.id)} />
                                     <Body>
                                         <Label style={styles.labelSelect}>{item.name}</Label>
                                     </Body>
@@ -223,7 +201,9 @@ export default class TambahLapak6 extends Component {
                                 request: this.state.request,
                                 descProduct: this.state.descProduct,
                                 weight: this.state.weight,
-                                time: this.state.time
+                                time: this.state.time,
+                                radio1: this.state.radio1,
+                                radio2: this.state.radio2
                             }})}>
                             <Text style={{marginLeft: 45}}>Submit</Text>
                         </Button>

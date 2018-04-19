@@ -77,12 +77,15 @@ export default class AsistenLapak extends Component{
         nameOfCustomer: "",
         customerPhone: "",
         customerAdd: "",
-        nearCourier: ""
+        nearCourier: "",
+        radio1: "",
+        radio2: ""
     }
 
-    checkRadio(name){
+    checkRadio(name, id){
         this.setState({
-            selectedName: name
+            selectedName: name,
+            radio1: id
         })
 
         if(this.state.selectedName == name)
@@ -93,9 +96,10 @@ export default class AsistenLapak extends Component{
         }
     }
 
-    checkRadio2(name){
+    checkRadio2(name, id){
         this.setState({
-            selectedName2: name
+            selectedName2: name,
+            radio2: id
         })
 
         if(this.state.selectedName2 == name)
@@ -143,7 +147,7 @@ export default class AsistenLapak extends Component{
                     {this.state.items.map((item, index)=> {
                         return(
                             <ListItem key={item.name} style={styles.iteme}>
-                                <Radio selected = {item.name == this.state.selectedName ? true : false} onPress={()=> this.checkRadio(item.name)} />
+                                <Radio selected = {item.name == this.state.selectedName ? true : false} onPress={()=> this.checkRadio(item.name, item.id)} />
                                 <Body>
                                     <Label style={styles.labelSelect}>{item.name}</Label>
                                 </Body>
@@ -156,7 +160,7 @@ export default class AsistenLapak extends Component{
                     {this.state.items2.map((item, index)=> {
                         return(
                             <ListItem key={item.name} style={styles.iteme}>
-                                <Radio selected = {item.name == this.state.selectedName2 ? true : false} onPress={()=> this.checkRadio2(item.name)} />
+                                <Radio selected = {item.name == this.state.selectedName2 ? true : false} onPress={()=> this.checkRadio2(item.name, item.id)} />
                                 <Body>
                                     <Label style={styles.labelSelect}>{item.name}</Label>
                                 </Body>
@@ -191,7 +195,9 @@ export default class AsistenLapak extends Component{
                                 nameOfCustomer: this.state.nameOfCustomer,
                                 customerPhone: this.state.customerPhone,
                                 customerAdd: this.state.customerAdd,
-                                nearCourier: this.state.nearCourier
+                                nearCourier: this.state.nearCourier,
+                                radio1: this.state.radio1,
+                                radio2: this.state.radio2
                             }})}>
                             <Text style={{marginLeft: 45}}>Kirim</Text>
                         </Button>

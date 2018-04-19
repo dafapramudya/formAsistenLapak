@@ -11,6 +11,9 @@ export default class NjajalPassingProduk extends Component{
 				<Text>{this.props.navigation.state.params.data.descProduct}</Text>
 				<Text>{this.props.navigation.state.params.data.weight}</Text>
 				<Text>{this.props.navigation.state.params.data.time}</Text>
+
+				<Text>{this.props.navigation.state.params.data.radio1}</Text>
+				<Text>{this.props.navigation.state.params.data.radio2}</Text>
 			</View>
 		)
 	}

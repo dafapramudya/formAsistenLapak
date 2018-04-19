@@ -30,7 +30,6 @@ export default class TambahLapakToko extends Component{
     state = {
         selectedName: "",
         selectedName2: "",
-        selectedName3: "",
 
         items: [{
             id: 1,
@@ -57,12 +56,15 @@ export default class TambahLapakToko extends Component{
         request: "",
         descProduct: "",
         weight: "",
-        time: ""
+        time: "",
+        radio1: "",
+        radio2: ""
     }
 
-    checkRadio(name){
+    checkRadio2(name, id){
         this.setState({
-            selectedName: name
+            selectedName: name,
+            radio1: id
         })
 
         if(this.state.selectedName == name)
@@ -73,15 +75,16 @@ export default class TambahLapakToko extends Component{
         }
     }
 
-    checkRadio2(name){
+    checkRadio3(name, id){
         this.setState({
-            selectedName: name
+            selectedName2: name,
+            radio2: id
         })
 
-        if(this.state.selectedName == name)
+        if(this.state.selectedName2 == name)
         {
             this.setState({
-                selectedName: ""
+                selectedName2: ""
             })
         }
     }
@@ -97,7 +100,7 @@ export default class TambahLapakToko extends Component{
                     </Body>
                 </Header>
 
-                <Content padder style={styles.mainColor}>
+                <Content padder>
                 <Form>
                     <Label style={styles.batasAtas}>Nama Produk (max 70 karakter)</Label>
                     <Item regular>
@@ -124,9 +127,9 @@ export default class TambahLapakToko extends Component{
                     {this.state.items.map((item, index)=> {
                         return(
                             <ListItem key={item.name} style={styles.iteme}>
-                                <Radio selected = {item.name == this.state.selectedName ? true : false} onPress={()=> this.checkRadio2(item.name)} />
+                                <Radio selected = {item.name == this.state.selectedName ? true : false} onPress={()=> this.checkRadio2(item.name, item.id)} />
                                 <Body>
-                                <Label>{item.name}</Label>
+                                <Label style={styles.labelSelect}>{item.name}</Label>
                                 </Body>
                             </ListItem>
                         )
@@ -147,9 +150,9 @@ export default class TambahLapakToko extends Component{
                     {this.state.items2.map((item, index)=> {
                         return(
                             <ListItem key={item.name} style={styles.iteme}>
-                                <Radio selected = {item.name == this.state.selectedName ? true : false} onPress={()=> this.checkRadio3(item.name)} />
+                                <Radio selected = {item.name == this.state.selectedName2 ? true : false} onPress={()=> this.checkRadio3(item.name, item.id)} />
                                 <Body>
-                                <Label>{item.name}</Label>
+                                <Label style={styles.labelSelect}>{item.name}</Label>
                                 </Body>
                             </ListItem>
                         )
@@ -167,7 +170,9 @@ export default class TambahLapakToko extends Component{
                                 request: this.state.request,
                                 descProduct: this.state.descProduct,
                                 weight: this.state.weight,
-                                time: this.state.time
+                                time: this.state.time,
+                                radio1: this.state.radio1,
+                                radio2: this.state.radio2
                             }})}>
                             <Text style={{marginLeft: 45}}>Submit</Text>
                         </Button>
@@ -205,6 +210,10 @@ const styles = StyleSheet.create({
 
     labelBtn:{
         marginLeft: 55
+    },
+
+    labelSelect:{
+        marginLeft: 20
     },
 
     label:{

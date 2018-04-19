@@ -16,6 +16,10 @@ export default class NjajalPassing extends Component{
 				<Text>{this.props.navigation.state.params.data.email}</Text>
 				<Text>{this.props.navigation.state.params.data.bankName}</Text>
 
+				<Text>{this.props.navigation.state.params.data.radio1}</Text>
+				<Text>{this.props.navigation.state.params.data.check1}</Text>
+				<Text>{this.props.navigation.state.params.data.check2}</Text>
+
 				<TouchableOpacity onPress={()=> this.props.navigation.navigate("RouteTambahLapakProduk")}>
 					<Text>Go to Produk</Text>
 				</TouchableOpacity>
