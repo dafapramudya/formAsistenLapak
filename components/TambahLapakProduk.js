@@ -169,7 +169,7 @@ export default class TambahLapakToko extends Component{
                                 weight: this.state.weight,
                                 time: this.state.time
                             }})}>
-                            <Text style={{marginLeft: 40}}>Submit</Text>
+                            <Text style={{marginLeft: 45}}>Submit</Text>
                         </Button>
                     </ListItem>
                 </Form>

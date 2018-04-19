@@ -51,16 +51,14 @@ export default class TambahLapak6 extends Component {
             name: "Tidak"
         },
         ],
-        selected1: "key0"
+
+        productName: "",
+        price: "",
+        request: "",
+        descProduct: "",
+        weight: "",
+        time: ""
     }
-
-    
-
-    onValueChange(value) {
-        this.setState({
-          selected1: value
-        });
-      }
 
     handleButtonPress() {
         this.setState({checkBoxStatus: !this.state.checkBoxStatus});
@@ -122,7 +120,7 @@ export default class TambahLapak6 extends Component {
     render() {
     return (
         <Container>
-            <Header>
+            <Header style={styles.mainColor} androidStatusBarColor="#b4424b">
                 <Body>
                     <Title>
                         Tambah Lapak
@@ -140,14 +138,14 @@ export default class TambahLapak6 extends Component {
                                     />
                                 </View>
                                 <View style={{ flex: 3 }}>
-                                    <Text style={styles.cardHeader}>Toko 4</Text>
-                                    <Text style={styles.cardContent}>Jln Wadepuk Jakarta</Text>    
-                                    <Text style={styles.cardDate}>21 Maret 2018</Text>
+                                    <Label style={styles.cardHeader}>Toko 4</Label>
+                                    <Label style={styles.cardContent}>Jln Wadepuk Jakarta</Label>    
+                                    <Label style={styles.cardDate}>21 Maret 2018</Label>
                                 </View>
                                 
                                 <View style={{flex:1}}>
-                                    <Text style={{marginTop:5}}>08.00</Text>
-                                    <Text style={{marginTop:5}}>JNE</Text>
+                                    <Label style={{marginTop:5}}>08.00</Label>
+                                    <Label style={{marginTop:5}}>JNE</Label>
                                 </View>
                             
                             </View>
@@ -158,7 +156,7 @@ export default class TambahLapak6 extends Component {
                     <View style={{width: '95%', alignSelf:'center'}}>
                         <Label style={styles.batasAtas}>Nama Produk (max 70 karakter)</Label>
                         <Item regular>
-                            <Input />
+                            <Input onChangeText={(text) => this.setState({productName: text})}/>
                         </Item>
 
                         <Label style={styles.batasAtas}>Gambar Produk</Label>
@@ -168,12 +166,12 @@ export default class TambahLapak6 extends Component {
 
                         <Label style={styles.batasAtas}>Harga</Label>
                         <Item regular>
-                            <Input />
+                            <Input onChangeText={(text) => this.setState({price: text})}/>
                         </Item>
 
                         <Label style={styles.batasAtas}>Pemesanan minimun/buah</Label>
                         <Item regular>
-                            <Input />
+                            <Input onChangeText={(text) => this.setState({request: text})}/>
                         </Item>
 
                         <Label style={styles.batasAtas}>Kondisi</Label>
@@ -183,7 +181,7 @@ export default class TambahLapak6 extends Component {
                                 <ListItem key={item.name} style={styles.iteme}>
                                     <Radio selected = {item.name == this.state.selectedName ? true : false} onPress={()=> this.checkRadio2(item.name)} />
                                     <Body>
-                                    <Text>{item.name}</Text>
+                                        <Label style={styles.labelSelect}>{item.name}</Label>
                                     </Body>
                                 </ListItem>
                             )
@@ -191,12 +189,12 @@ export default class TambahLapak6 extends Component {
 
                         <Label style={styles.batasAtas}>Deskripsi Produk</Label>
                         <Item regular>
-                            <Input />
+                            <Input onChangeText={(text) => this.setState({descProduct: text})}/>
                         </Item>
 
                         <Label style={styles.batasAtas}>Berat (kg)</Label>
                         <Item regular>
-                            <Input />
+                            <Input onChangeText={(text) => this.setState({weight: text})}/>
                         </Item>
 
                         <Label style={styles.batasAtas}>Aktifkan preorder untuk waktu proses produksi yang lebih lama</Label>
@@ -206,7 +204,7 @@ export default class TambahLapak6 extends Component {
                                 <ListItem key={item.name} style={styles.iteme}>
                                     <Radio selected = {item.name == this.state.selectedName ? true : false} onPress={()=> this.checkRadio3(item.name)} />
                                     <Body>
-                                    <Text>{item.name}</Text>
+                                        <Label style={styles.labelSelect}>{item.name}</Label>
                                     </Body>
                                 </ListItem>
                             )
@@ -214,21 +212,28 @@ export default class TambahLapak6 extends Component {
 
                         <Label style={styles.batasAtas}>Waktu Proses (wajib diisi untuk mengetahui lama produk diproses)</Label>
                         <Item regular>
-                            <Input />
+                            <Input onChangeText={(text) => this.setState({time: text})}/>
                         </Item>
                     </View>
 
-                    <ListItem>
-                        <Button style={styles.buttone}>
-                            <Text style={styles.labelBtn}>Submit</Text>
+                    <ListItem style={{alignSelf:'center', justifyContent:'center'}}>
+                        <Button style={styles.buttone} onPress={()=> this.props.navigation.navigate('RouteNjajalPassingProduk', {data: {
+                                productName: this.state.productName,
+                                price: this.state.price,
+                                request: this.state.request,
+                                descProduct: this.state.descProduct,
+                                weight: this.state.weight,
+                                time: this.state.time
+                            }})}>
+                            <Text style={{marginLeft: 45}}>Submit</Text>
                         </Button>
                     </ListItem>
                 </Form>
             </Content>
 
-            <Footer>
-                <FooterTab>
-                    <Button>
+            <Footer style={styles.mainColor}>
+                <FooterTab style={styles.mainColor}>
+                    <Button >
                         <Icon name="home" />
                     </Button>
                     <Button>
@@ -246,9 +251,8 @@ export default class TambahLapak6 extends Component {
 
 const styles = StyleSheet.create({
     buttone:{
-        width: '70%',
-        height: 40,
-        marginLeft: 43,
+        width: '60%',
+        backgroundColor: "#b4424b"
     },
 
     iteme:{
@@ -261,6 +265,10 @@ const styles = StyleSheet.create({
 
     labelBtn:{
         marginLeft: 55
+    },
+
+    labelSelect:{
+        marginLeft: 20
     },
 
     label:{
@@ -282,5 +290,9 @@ const styles = StyleSheet.create({
     },
     cardDate: {
         marginTop: 5
+    },
+
+    mainColor:{
+        backgroundColor: '#dd5453'
     }
 })

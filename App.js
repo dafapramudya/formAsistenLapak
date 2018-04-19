@@ -42,7 +42,7 @@ const App = StackNavigator({
 },
 
 {
-    initialRouteName: 'RouteTambahLapakToko',
+    initialRouteName: 'RouteTambahLapak6',
     headerMode: 'none',
     navigationOptions:{
       headerVisible: false

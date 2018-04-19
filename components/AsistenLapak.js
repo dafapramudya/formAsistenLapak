@@ -145,7 +145,7 @@ export default class AsistenLapak extends Component{
                             <ListItem key={item.name} style={styles.iteme}>
                                 <Radio selected = {item.name == this.state.selectedName ? true : false} onPress={()=> this.checkRadio(item.name)} />
                                 <Body>
-                                <Text>{item.name}</Text>
+                                    <Label style={styles.labelSelect}>{item.name}</Label>
                                 </Body>
                             </ListItem>
                         )
@@ -158,7 +158,7 @@ export default class AsistenLapak extends Component{
                             <ListItem key={item.name} style={styles.iteme}>
                                 <Radio selected = {item.name == this.state.selectedName2 ? true : false} onPress={()=> this.checkRadio2(item.name)} />
                                 <Body>
-                                <Text>{item.name}</Text>
+                                    <Label style={styles.labelSelect}>{item.name}</Label>
                                 </Body>
                             </ListItem>
                         )
@@ -242,6 +242,10 @@ const styles = StyleSheet.create({
     fileChooser:{
         color: '#156af2',
         marginLeft: -17
+    },
+
+    labelSelect:{
+        marginLeft: 20
     },
 
     mainColor:{
