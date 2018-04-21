@@ -144,7 +144,7 @@ export default class TambahLapak6 extends Component {
 
                         <Label style={styles.batasAtas}>Harga</Label>
                         <Item regular>
-                            <Input onChangeText={(text) => this.setState({price: text})}/>
+                            <Input onChangeText={(text) => this.setState({price: text})} keyboardType = 'numeric'/>
                         </Item>
 
                         <Label style={styles.batasAtas}>Pemesanan minimun/buah</Label>
