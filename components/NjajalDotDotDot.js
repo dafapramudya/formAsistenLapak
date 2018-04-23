@@ -91,6 +91,10 @@ export default class NjajalDotDotDot extends Component{
         }
     }
 
+    componentDidMount(){
+        this.allDeliveryService()
+    }
+
     checkRadio(name, id){
         this.setState({
             selectedName: name,

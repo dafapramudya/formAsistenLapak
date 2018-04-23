@@ -24,6 +24,9 @@ import {
     List
 } from 'native-base'
 import { StyleSheet, View, TouchableOpacity, StatusBar } from 'react-native';
+import axios from 'axios';
+
+const uri = "https://api.backendless.com/A54546E5-6846-C9D4-FFAD-EFA9CB9E8A00/241A72A5-2C8A-1DB8-FFAF-0F46BA4A8100/data";
 
 export default class TambahLapakToko extends Component{
 
@@ -232,17 +235,20 @@ export default class TambahLapakToko extends Component{
         },
         ],
 
-        marketName: "",
-        slogan: "",
-        description: "",
-        fullAddress: "",
-        city: "",
-        postCode: "",
-        website: "",
-        phone: "",
-        email: "",
-        bankName: "",
-        radio1: "",
+        // marketName: "",
+        // slogan: "",
+        // description: "",
+        // fullAddress: "",
+        // city: "",
+        // postCode: "",
+        // website: "",
+        // phone: "",
+        // email: "",
+        // bankName: "",
+        // radio1: "",
+
+        data:{},
+
         check1: [],
         check2: []
 
@@ -262,14 +268,15 @@ export default class TambahLapakToko extends Component{
         }
     }
 
-    addCheck(set) {
+    addCheck(set, categories) {
 
         if (!this.state.check.includes(set)) {
           getCheck = this.state.check
           getCheck.push(set)
           this.setState({
             check: getCheck,
-            check1: getCheck
+            check1: getCheck,
+            data: {...this.state.data, categories}
           })
         }
     
@@ -283,7 +290,7 @@ export default class TambahLapakToko extends Component{
     
       }
 
-      addCheck2(set) {
+      addCheck2(set, ) {
 
         if (!this.state.checkk.includes(set)) {
           getCheck = this.state.checkk
@@ -304,6 +311,23 @@ export default class TambahLapakToko extends Component{
     
       }
 
+      allStores(){
+          axios.get(`${uri}/stores?sortBy=created%20desc`).then(result => {
+              this.setState({
+                  data: result.data
+              })
+          })    
+      }
+
+      handleSubmit(){
+          axios.post(`${uri}/stores`, this.state.data).then(result => {
+              if(result.data){
+                  this.allStores()
+                  alert("Success!")
+              }
+          })
+      }
+
     render(){
         return(
             <Container>
@@ -318,12 +342,12 @@ export default class TambahLapakToko extends Component{
                 <Form>
                     <Label>Nama Toko</Label>
                     <Item regular>
-                        <Input onChangeText={(text) => this.setState({marketName: text})} />
+                        <Input onChangeText={(name) => this.setState({data: {...this.state.data, name}})} />
                     </Item>
 
                     <Label style={styles.batasAtas}>Slogan</Label>
                     <Item regular>
-                        <Input onChangeText={(text) => this.setState({slogan: text})} />
+                        <Input onChangeText={(slogan) => this.setState({data: {...this.state.data, slogan}})} />
                     </Item>
                     
                     <Label style={styles.batasAtas}>Logo Toko</Label>
@@ -332,46 +356,56 @@ export default class TambahLapakToko extends Component{
                     </Button>
 
                     <Label style={styles.batasAtas}>Deskripsi</Label>
-                    <Textarea rowSpan={5} bordered onChangeText={(text) => this.setState({description: text})}/>
+                    <Textarea rowSpan={5} bordered onChangeText={(description) => this.setState({data: {...this.state.data, description}})}/>
 
                     <Label style={styles.batasAtas}>Alamat Lengkap</Label>
-                    <Textarea rowSpan={5} bordered onChangeText={(text) => this.setState({fullAddress: text})}/>
+                    <Textarea rowSpan={5} bordered onChangeText={(address) => this.setState({data: {...this.state.data, address}})}/>
 
                     <Label style={styles.batasAtas}>Kota</Label>
                     <Item regular>
-                        <Input onChangeText={(text) => this.setState({city: text})}/>
+                        <Input onChangeText={(city) => this.setState({data: {...this.state.data, city}})}/>
                     </Item>
 
                     <Label style={styles.batasAtas}>Kode Pos</Label>
                     <Item regular>
-                        <Input onChangeText={(text) => this.setState({postCode: text})}/>
+                        <Input onChangeText={(postal_code) => this.setState({data: {...this.state.data, postal_code}})}/>
                     </Item>
 
                     <Label style={styles.batasAtas}>Situs Web</Label>
                     <Item regular>
-                        <Input onChangeText={(text) => this.setState({website: text})}/>
+                        <Input onChangeText={(website) => this.setState({data: {...this.state.data, website}})}/>
                     </Item>
 
                     <Label style={styles.batasAtas}>No Telp</Label>
                     <Item regular>
-                        <Input onChangeText={(text) => this.setState({phone: text})}/>
+                        <Input onChangeText={(mobile_phone) => this.setState({data: {...this.state.data, mobile_phone}})}/>
                     </Item>
 
                     <Label style={styles.batasAtas}>Alamat Email</Label>
                     <Item regular>
-                        <Input onChangeText={(text) => this.setState({email: text})}/>
+                        <Input onChangeText={(email) => this.setState({data: {...this.state.data, email}})}/>
                     </Item>
 
-                    <Label style={styles.batasAtas}>Nama Bank dan No Rek.</Label>
+                    <Label style={styles.batasAtas}>Nama Bank</Label>
                     <Item regular>
-                        <Input onChangeText={(text) => this.setState({bankName: text})}/>
+                    <Input onChangeText={(bank) => this.setState({ data: {...this.state.data, bank} })} />
+                    </Item>
+
+                    <Label style={styles.batasAtas}>Nomor Rekening</Label>
+                    <Item regular>
+                    <Input onChangeText={(bank_account) => this.setState({ data: {...this.state.data, bank_account} })} />
+                    </Item>
+
+                    <Label style={styles.batasAtas}>Nama Pemilik Akun Bank</Label>
+                    <Item regular>
+                    <Input onChangeText={(bank_account_owner) => this.setState({ data: {...this.state.data, bank_account_owner} })} />
                     </Item>
 
                     <Label style={styles.batasAtas}>Jenis barang (Kategori)</Label>
 
                     {this.state.items.map((item, key) => (
                         <ListItem key={key} style={styles.iteme}>
-                            <CheckBox onPress={() => this.addCheck(item.id)} checked={this.state.check.includes(item.id) ? true : false} color="#dd5453" />
+                            <CheckBox onPress={() => this.addCheck(item.id, item.name)} checked={this.state.check.includes(item.id) ? true : false} color="#dd5453" />
                         <Body>
                             <Label style={styles.labelSelect}>{item.name}</Label>
                         </Body>
@@ -400,7 +434,7 @@ export default class TambahLapakToko extends Component{
 
                     {this.state.items2.map((item, key) => (
                         <ListItem key={key} style={styles.iteme}>
-                            <CheckBox onPress={() => this.addCheck2(item.id)} checked={this.state.checkk.includes(item.id) ? true : false} color="#dd5453"/>
+                            <CheckBox onPress={() => this.addCheck2(item.id, item.name)} checked={this.state.checkk.includes(item.id) ? true : false} color="#dd5453"/>
                         <Body>
                             <Label style={styles.labelSelect}>{item.name}</Label>
                         </Body>
@@ -412,21 +446,7 @@ export default class TambahLapakToko extends Component{
                     ))} */}
 
                     <ListItem style={{alignSelf:'center', justifyContent:'center'}}>
-                        <Button style={styles.buttone} onPress={()=> this.props.navigation.navigate('RouteNjajalPassing', {data: {
-                                marketName: this.state.marketName,
-                                slogan: this.state.slogan,
-                                description: this.state.description,
-                                fullAddress: this.state.fullAddress,
-                                city: this.state.city,
-                                postCode: this.state.postCode,
-                                website: this.state.website,
-                                phone: this.state.phone,
-                                email: this.state.email,
-                                bankName: this.state.bankName,
-                                radio1: this.state.radio1,
-                                check1: this.state.check1,
-                                check2: this.state.check2,
-                            }})}>
+                        <Button style={styles.buttone} onPress={()=> this.handleSubmit()}>
                             <Text style={{marginLeft: 40}}>Submit</Text>
                         </Button> 
                     </ListItem>

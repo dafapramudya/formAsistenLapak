@@ -24,6 +24,9 @@ import {
     List
 } from 'native-base'
 import { StyleSheet, View, TouchableOpacity, StatusBar } from 'react-native';
+import axios from 'axios';
+
+const uri = "https://api.backendless.com/A54546E5-6846-C9D4-FFAD-EFA9CB9E8A00/241A72A5-2C8A-1DB8-FFAF-0F46BA4A8100/data";
 
 export default class TambahLapakToko extends Component{
 
@@ -33,60 +36,70 @@ export default class TambahLapakToko extends Component{
 
         items: [{
             id: 1,
-            name: "Baru"
+            name: "Baru",
+            value: true
         },
         {
             id: 2,
-            name: "Bekas"
+            name: "Bekas",
+            value: false
         },
         ],
 
         items2: [{
             id: 1,
-            name: "Ya"
+            name: "Ya",
+            value: true
         },
         {
             id: 2,
-            name: "Tidak"
+            name: "Tidak",
+            value: false
         },
         ],
 
-        productName: "",
-        price: "",
-        request: "",
-        descProduct: "",
-        weight: "",
-        time: "",
-        radio1: "",
-        radio2: ""
+        data: {}
     }
 
-    checkRadio2(name, id){
+    checkRadio2(name, is_new){
         this.setState({
             selectedName: name,
-            radio1: id
+            data: {...this.state.data, is_new}
         })
-
-        if(this.state.selectedName == name)
-        {
-            this.setState({
-                selectedName: ""
-            })
-        }
     }
 
-    checkRadio3(name, id){
+    checkRadio3(name, is_preorder){
         this.setState({
             selectedName2: name,
-            radio2: id
+            data: {...this.state.data, is_preorder}
+        })
+    }
+
+    allProduct(){
+        axios.get(`${uri}/products?sortBy=created%20desc`).then(result => {
+            this.setState({
+                data: result.data
+            })
+        })
+    }
+
+    handleSubmit(){ 
+        const data = {
+            ...this.state.data, 
+            price: Number(this.state.data.price),
+            weight: Number(this.state.data.weight),
+            processing_days: Number(this.state.data.processing_days)
+        }
+
+        // alert(JSON.stringify(data));
+
+        axios.post(`${uri}/products`, data).then(result => {
+            if(result.data){
+                this.allProduct,
+                alert("Succes!")
+            }
         })
 
-        if(this.state.selectedName2 == name)
-        {
-            this.setState({
-                selectedName2: ""
-            })
-        }
     }
 
     render(){
@@ -104,7 +117,7 @@ export default class TambahLapakToko extends Component{
                 <Form>
                     <Label style={styles.batasAtas}>Nama Produk (max 70 karakter)</Label>
                     <Item regular>
-                        <Input onChangeText={(text) => this.setState({productName: text})}/>
+                        <Input onChangeText={(name) => this.setState({data: {...this.state.data, name}})}/>
                     </Item>
 
                     <Label style={styles.batasAtas}>Gambar Produk</Label>
@@ -114,20 +127,20 @@ export default class TambahLapakToko extends Component{
 
                     <Label style={styles.batasAtas}>Harga</Label>
                     <Item regular>
-                        <Input onChangeText={(text) => this.setState({price: text})}/>
+                        <Input onChangeText={(price) => this.setState({ data: {...this.state.data, price}})} keyboardType = 'numeric'/>
                     </Item>
 
                     <Label style={styles.batasAtas}>Pemesanan minimun/buah</Label>
                     <Item regular>
-                        <Input onChangeText={(text) => this.setState({request: text})}/>
+                        <Input />
                     </Item>
 
                     <Label style={styles.batasAtas}>Kondisi</Label>
                     
                     {this.state.items.map((item, index)=> {
                         return(
-                            <ListItem key={item.name} style={styles.iteme}>
-                                <Radio selected = {item.name == this.state.selectedName ? true : false} onPress={()=> this.checkRadio2(item.name, item.id)} />
+                            <ListItem key={item.id} style={styles.iteme}>
+                                <Radio selected = {item.name == this.state.selectedName ? true : false} onPress={()=> this.checkRadio2(item.name, item.value)} />
                                 <Body>
                                 <Label style={styles.labelSelect}>{item.name}</Label>
                                 </Body>
@@ -137,20 +150,20 @@ export default class TambahLapakToko extends Component{
 
                     <Label style={styles.batasAtas}>Deskripsi Produk</Label>
                     <Item regular>
-                        <Input onChangeText={(text) => this.setState({descProduct: text})}/>
+                        <Input onChangeText={(description) => this.setState({data: {...this.state.data, description}})}/>
                     </Item>
 
                     <Label style={styles.batasAtas}>Berat (kg)</Label>
                     <Item regular>
-                        <Input onChangeText={(text) => this.setState({weight: text})}/>
+                        <Input onChangeText={(weight) => this.setState({data: {...this.state.data, weight}})}/>
                     </Item>
 
                     <Label style={styles.batasAtas}>Aktifkan preorder untuk waktu proses produksi yang lebih lama</Label>
 
                     {this.state.items2.map((item, index)=> {
                         return(
-                            <ListItem key={item.name} style={styles.iteme}>
-                                <Radio selected = {item.name == this.state.selectedName2 ? true : false} onPress={()=> this.checkRadio3(item.name, item.id)} />
+                            <ListItem key={item.id} style={styles.iteme}>
+                                <Radio selected = {item.name == this.state.selectedName2 ? true : false} onPress={()=> this.checkRadio3(item.name, item.value)} />
                                 <Body>
                                 <Label style={styles.labelSelect}>{item.name}</Label>
                                 </Body>
@@ -160,20 +173,11 @@ export default class TambahLapakToko extends Component{
 
                     <Label style={styles.batasAtas}>Waktu Proses (wajib diisi untuk mengetahui lama produk diproses)</Label>
                     <Item regular>
-                        <Input onChangeText={(text) => this.setState({time: text})}/>
+                        <Input onChangeText={(processing_days) => this.setState({data: {...this.state.data, processing_days}})}/>
                     </Item>
 
                     <ListItem style={{alignSelf:'center', justifyContent:'center'}}>
-                        <Button style={styles.buttone} onPress={()=> this.props.navigation.navigate('RouteNjajalPassingProduk', {data: {
-                                productName: this.state.productName,
-                                price: this.state.price,
-                                request: this.state.request,
-                                descProduct: this.state.descProduct,
-                                weight: this.state.weight,
-                                time: this.state.time,
-                                radio1: this.state.radio1,
-                                radio2: this.state.radio2
-                            }})}>
+                        <Button style={styles.buttone} onPress={()=> this.handleSubmit()}>
                             <Text style={{marginLeft: 45}}>Submit</Text>
                         </Button>
                     </ListItem>

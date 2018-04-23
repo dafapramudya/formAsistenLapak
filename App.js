@@ -46,7 +46,10 @@ const App = StackNavigator({
     },
 
     RouteTambahLapak6: {
-        screen: TambahLapak6
+        screen: TambahLapak6,
+        navigationOptions:{
+            title: "Tambah Daftar Produk"
+        }
     },
 
     RouteAsistenLapak: {
@@ -63,10 +66,10 @@ const App = StackNavigator({
 },
 
 {
-    initialRouteName: 'RouteTambahTokoCS',
+    initialRouteName: 'RouteAsistenLapak',
     headerMode: 'none',
     navigationOptions:{
-      headerVisible: false
+      headerStyle: "#dd5354"
     }
 });
 
