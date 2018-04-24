@@ -23,8 +23,10 @@ import {
     FooterTab,
     List
 } from 'native-base'
-import { StyleSheet, View, TouchableOpacity, StatusBar } from 'react-native';
+import { StyleSheet, View, TouchableOpacity, StatusBar, Image, PixelRatio, AppRegistry } from 'react-native';
+
 import axios from 'axios';
+import ImagePicker from 'react-native-image-picker';
 
 const uri = "https://api.backendless.com/A54546E5-6846-C9D4-FFAD-EFA9CB9E8A00/241A72A5-2C8A-1DB8-FFAF-0F46BA4A8100/data";
 
@@ -33,6 +35,7 @@ export default class TambahLapakToko extends Component{
     state = {
         selectedName: "",
         selectedName2: "",
+        imageSource: null,
 
         items: [{
             id: 1,
@@ -60,6 +63,58 @@ export default class TambahLapakToko extends Component{
 
         data: {}
     }
+
+    selectPhotoTapped() {
+        const options = {
+          quality: 1.0,
+          maxWidth: 500,
+          maxHeight: 500,
+          storageOptions: {
+            skipBackup: true
+          }
+        };
+    
+        ImagePicker.showImagePicker(options, (response) => {
+          console.log('Response = ', response);
+    
+          if (response.didCancel) {
+            console.log('User cancelled photo picker');
+          }
+          else if (response.error) {
+            console.log('ImagePicker Error: ', response.error);
+          }
+          else if (response.customButton) {
+            console.log('User tapped custom button: ', response.customButton);
+          }
+          else {
+            let source = { uri: response.uri };
+    
+            // You can also display the image using data:
+            // let source = { uri: 'data:image/jpeg;base64,' + response.data };
+    
+            this.setState({
+  
+              imageSource: source
+  
+            });
+
+            const data = new FormData();
+            data.append("photo", {
+                uri: source.uri,
+                type: "image/jpeg",
+                name: "Photo"
+            });
+            fetch(`${uri}/files/images/logoProduct.png?overwrite=true`, {
+                method: "post",
+                body: data
+            }).then(result => {
+                this.setState({
+                    data: {...this.state.data, image: result.url}
+                })
+            })
+          }
+        });
+      }
 
     checkRadio2(name, is_new){
         this.setState({
@@ -121,9 +176,32 @@ export default class TambahLapakToko extends Component{
                     </Item>
 
                     <Label style={styles.batasAtas}>Gambar Produk</Label>
-                    <Button transparent onPress={()=> {alert("Coming Soon")}}>
-                        <Text style={styles.fileChooser}>TAMBAHKAN FILE</Text>
-                    </Button>
+                        
+                        { this.state.imageSource === null ? (
+                            <Button transparent onPress={ this.selectPhotoTapped.bind(this)}>
+                                <Text style={styles.fileChooser}>TAMBAHKAN FOTO</Text>
+                            </Button>
+                        )
+                        :
+                        (
+                        <View>
+                            <View>
+                            <Button transparent onPress={ this.selectPhotoTapped.bind(this)}>
+                                <Text style={styles.fileChooser}>GANTI FOTO</Text>
+                            </Button>
+                            </View>
+                            <View
+                                style={[
+                                styles.avatar,
+                                styles.avatarContainer,
+                                { marginBottom: 20 }
+                                ]}
+                            >
+                                <Image style={styles.avatar} source={this.state.imageSource} />
+                            </View>
+                        </View>
+                        )
+                        }
 
                     <Label style={styles.batasAtas}>Harga</Label>
                     <Item regular>
@@ -177,8 +255,8 @@ export default class TambahLapakToko extends Component{
                     </Item>
 
                     <ListItem style={{alignSelf:'center', justifyContent:'center'}}>
-                        <Button style={styles.buttone} onPress={()=> this.handleSubmit()}>
-                            <Text style={{marginLeft: 45}}>Submit</Text>
+                        <Button block style={styles.buttone} onPress={()=> this.handleSubmit()}>
+                            <Text>Submit</Text>
                         </Button>
                     </ListItem>
                 </Form>
@@ -204,7 +282,7 @@ export default class TambahLapakToko extends Component{
 
 const styles = StyleSheet.create({
     buttone:{
-        width: '60%',
+        flex: 1,
         backgroundColor: "#b4424b"
     },
 
@@ -230,10 +308,24 @@ const styles = StyleSheet.create({
 
     fileChooser:{
         color: '#156af2',
-        marginLeft: -17
+        marginLeft: -15
     },
 
     mainColor:{
         backgroundColor: '#dd5453'
+    },
+
+    avatarContainer: {
+        borderColor: "#9B9B9B",
+        borderWidth: 1 / PixelRatio.get(),
+        justifyContent: "center",
+        alignItems: "center"
+    },
+    avatar: {
+        borderRadius: 75,
+        width: 150,
+        height: 150,
+        justifyContent: "center",
+        alignItems: "center"
     }
 })

@@ -24,6 +24,9 @@ import {
     List
 } from 'native-base'
 import { StyleSheet, View, TouchableOpacity } from 'react-native';
+import axios from 'axios';
+
+const uri = "https://api.backendless.com/A54546E5-6846-C9D4-FFAD-EFA9CB9E8A00/241A72A5-2C8A-1DB8-FFAF-0F46BA4A8100/data"
 
 export default class AsistenLapak extends Component{
 
@@ -70,44 +73,38 @@ export default class AsistenLapak extends Component{
         }
         ],
 
-        reqProduct: "",
-        stock: "",
-        specialReq: "",
-        orderNum: "",
-        nameOfCustomer: "",
-        customerPhone: "",
-        customerAdd: "",
-        nearCourier: "",
-        radio1: "",
-        radio2: "",
+        data:{}
+    }
+
+    allTransactions(){
+        axios.get(`${uri}/transactions?sortBy=created%20desc`).then(result => {
+            data: result.data
+        })
+    }
+
+    handleSubmit(){
+        axios.post(`${uri}/transactions`, this.state.data).then(result => {
+            if(result.data){
+                this.allTransactions(),
+                alert("Success")
+            }
+        })
     }
 
     checkRadio(name, id){
         this.setState({
             selectedName: name,
             radio1: id
-        })
 
-        if(this.state.selectedName == name)
-        {
-            this.setState({
-                selectedName: ""
-            })
-        }
+        })
     }
 
-    checkRadio2(name, id){
+    checkRadio2(typeOfPacking, id){
         this.setState({
-            selectedName2: name,
-            radio2: id
+            selectedName2: typeOfPacking,
+            radio2: id,
+            data: {...this.state.data, typeOfPacking}
         })
-
-        if(this.state.selectedName2 == name)
-        {
-            this.setState({
-                selectedName2: ""
-            })
-        }
     }
 
     render(){
@@ -124,22 +121,22 @@ export default class AsistenLapak extends Component{
                 <Form>
                     <Label style={styles.batasAtas}>Produk Pesanan</Label>
                     <Item regular>
-                        <Input onChangeText={(text) => this.setState({reqProduct: text})}/>
+                        <Input onChangeText={(orderProduct) => this.setState({data: {...this.state.data, orderProduct}})}/>
                     </Item>
 
                     <Label style={styles.batasAtas}>Stock Availability</Label>
                     <Item regular>
-                        <Input onChangeText={(text) => this.setState({stock: text})}/>
+                        <Input onChangeText={(stockAvailability) => this.setState({data: {...this.state.data, stockAvailability}})}/>
                     </Item>
 
                     <Label style={styles.batasAtas}>Special Request</Label>
                     <Item regular>
-                        <Input onChangeText={(text) => this.setState({specialReq: text})}/>
+                        <Input onChangeText={(specialRequest) => this.setState({data:{...this.state.data, specialRequest}})}/>
                     </Item>
                     
                     <Label style={styles.batasAtas}>Order Number</Label>
                     <Item regular>
-                        <Input onChangeText={(text) => this.setState({orderNum: text})}/>
+                        <Input onChangeText={(orderNumber) => this.setState({data:{...this.state.data, orderNumber}})}/>
                     </Item>
                     
                     <Label style={styles.batasAtas}>Type of Shipping</Label>
@@ -170,36 +167,25 @@ export default class AsistenLapak extends Component{
 
                     <Label style={styles.batasAtas}>Name of Customer</Label>
                     <Item regular>
-                        <Input onChangeText={(text) => this.setState({nameOfCustomer: text})}/>
+                        <Input onChangeText={(name) => this.setState({data:{...this.state.data, name}})}/>
                     </Item>
 
                     <Label style={styles.batasAtas}>Customer Phone Number</Label>
                     <Item regular>
-                        <Input onChangeText={(text) => this.setState({customerPhone: text})}/>
+                        <Input onChangeText={(mobile_phone) => this.setState({data: {...this.state.data, mobile_phone}})}/>
                     </Item>
 
                     <Label style={styles.batasAtas}>Customer Address</Label>
-                    <Textarea rowSpan={5} bordered onChangeText={(text) => this.setState({customerAdd: text})}/>
+                    <Textarea rowSpan={5} bordered onChangeText={(address) => this.setState({data: {...this.state.data, address}})}/>
 
                     <Label style={styles.batasAtas}>Nearest Courier Location</Label>
                     <Item regular>
-                        <Input onChangeText={(text) => this.setState({nearCourier: text})} />
+                        <Input onChangeText={(nearestCourier) => this.setState({data: {...this.state.data, nearestCourier}})} />
                     </Item>
                     
-                    <ListItem style={{alignSelf:'center', justifyContent:'center'}}>
-                        <Button style={styles.submitBtn} onPress={()=> this.props.navigation.navigate('RoutePassingAsisten', {data: {
-                                reqProduct: this.state.reqProduct,
-                                stock: this.state.stock,
-                                specialReq: this.state.specialReq,
-                                orderNum: this.state.orderNum,
-                                nameOfCustomer: this.state.nameOfCustomer,
-                                customerPhone: this.state.customerPhone,
-                                customerAdd: this.state.customerAdd,
-                                nearCourier: this.state.nearCourier,
-                                radio1: this.state.radio1,
-                                radio2: this.state.radio2
-                            }})}>
-                            <Text style={{marginLeft: 45}}>Kirim</Text>
+                    <ListItem>
+                        <Button block style={styles.submitBtn} onPress={()=> this.handleSubmit()}>
+                            <Text>Kirim</Text>
                         </Button>
                     </ListItem>
                 </Form>
@@ -225,8 +211,8 @@ export default class AsistenLapak extends Component{
 
 const styles = StyleSheet.create({
     submitBtn:{
-        width: '60%',
-        backgroundColor: "#b4424b"
+        backgroundColor: "#b4424b",
+        flex: 1
     },
 
     batasAtas:{

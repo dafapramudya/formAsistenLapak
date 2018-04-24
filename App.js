@@ -13,6 +13,7 @@ import TambahLapakProduk from './components/TambahLapakProduk';
 import TambahLapak6 from './components/TambahLapak6';
 import NjajalDot from './components/NjajalDotDotDot';
 import TambahTokoCS from './components/TambahTokoCS';
+import NjajalImagePicker from './components/NjajalImagePicker'
 
 
 const App = StackNavigator({
@@ -62,6 +63,10 @@ const App = StackNavigator({
 
     RouteTambahTokoCS:{
         screen:TambahTokoCS
+    },
+
+    RouteNjajalImagePicker:{
+        screen: NjajalImagePicker
     }
 },
 

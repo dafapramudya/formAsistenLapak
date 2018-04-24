@@ -1,10 +1,5 @@
 import React, { Component } from 'react';
-import { 
-    Content,
-    Text,
-    Header,
-    Container,
-    Form,
+import { Content, Text, Header, Container, Form,
     Item,
     Input,
     Textarea,
@@ -23,16 +18,19 @@ import {
     Icon,
     Card,
     CardItem,
-    List } from 'native-base';
-import { StyleSheet, View,  Image } from 'react-native';
-import axios from 'axios';
+    List,} from 'native-base';
+import { StyleSheet, View,  Image, PixelRatio, TouchableOpacity, AppRegistry} from 'react-native';
 
-const uri = "https://api.backendless.com/A54546E5-6846-C9D4-FFAD-EFA9CB9E8A00/241A72A5-2C8A-1DB8-FFAF-0F46BA4A8100/data";
+import axios from 'axios';
+import ImagePicker from 'react-native-image-picker';
+
+const uri = "https://api.backendless.com/A54546E5-6846-C9D4-FFAD-EFA9CB9E8A00/241A72A5-2C8A-1DB8-FFAF-0F46BA4A8100";
 
 export default class TambahLapak6 extends Component {
 
     state = {
         checkedName: "",
+        imageSource: null,
         conditione: false,
         checkedName2: "",
         selectedName: "",
@@ -65,8 +63,60 @@ export default class TambahLapak6 extends Component {
         data: {}
     }
 
+    selectPhotoTapped() {
+        const options = {
+          quality: 1.0,
+          maxWidth: 500,
+          maxHeight: 500,
+          storageOptions: {
+            skipBackup: true
+          }
+        };
+    
+        ImagePicker.showImagePicker(options, (response) => {
+          console.log('Response = ', response);
+    
+          if (response.didCancel) {
+            console.log('User cancelled photo picker');
+          }
+          else if (response.error) {
+            console.log('ImagePicker Error: ', response.error);
+          }
+          else if (response.customButton) {
+            console.log('User tapped custom button: ', response.customButton);
+          }
+          else {
+            let source = { uri: response.uri };
+    
+            // You can also display the image using data:
+            // let source = { uri: 'data:image/jpeg;base64,' + response.data };
+    
+            this.setState({
+  
+              imageSource: source
+  
+            });
+
+            const data = new FormData();
+            data.append("photo", {
+                uri: source.uri,
+                type: "image/jpeg",
+                name: "Photo"
+            });
+            fetch(`${uri}/files/images/logoProduct.png?overwrite=true`, {
+                method: "post",
+                body: data
+            }).then(result => {
+                this.setState({
+                    data: {...this.state.data, image: result.url}
+                })
+            })
+          }
+        });
+      }
+
     allProduct(){
-        axios.get(`${uri}/products?sortBy=created%20desc`).then(result => {
+        axios.get(`${uri}/data/products?sortBy=created%20desc`).then(result => {
             this.setState({
                 data: result.data
             })
@@ -83,7 +133,7 @@ export default class TambahLapak6 extends Component {
 
         // alert(JSON.stringify(data));
 
-        axios.post(`${uri}/products`, data).then(result => {
+        axios.post(`${uri}/data/products`, data).then(result => {
             if(result.data){
                 this.allProduct,
                 alert("Succes!")
@@ -149,11 +199,35 @@ export default class TambahLapak6 extends Component {
                         <Item regular>
                             <Input onChangeText={(name) => this.setState({data: {...this.state.data, name}})}/>
                         </Item>
-
+                        
                         <Label style={styles.batasAtas}>Gambar Produk</Label>
-                        <Button transparent onPress={()=> {alert("Coming Soon")}}>
-                            <Text style={styles.fileChooser}>TAMBAHKAN FILE</Text>
-                        </Button>
+                        
+                            { this.state.imageSource === null ? (
+                                <Button transparent onPress={ this.selectPhotoTapped.bind(this)}>
+                                    <Text style={styles.fileChooser}>TAMBAHKAN FOTO</Text>
+                                </Button>
+                            )
+                            :
+                            (
+                            <View>
+                                <View>
+                                <Button transparent onPress={ this.selectPhotoTapped.bind(this)}>
+                                    <Text style={styles.fileChooser}>GANTI FOTO</Text>
+                                </Button>
+                                </View>
+                                <View
+                                    style={[
+                                    styles.avatar,
+                                    styles.avatarContainer,
+                                    { marginBottom: 20 }
+                                    ]}
+                                >
+                                    <Image style={styles.avatar} source={this.state.imageSource} />
+                                </View>
+                            </View>
+                            )
+                            }
+                        
 
                         <Label style={styles.batasAtas}>Harga</Label>
                         <Item regular>
@@ -208,8 +282,8 @@ export default class TambahLapak6 extends Component {
                     </View>
 
                     <ListItem style={{alignSelf:'center', justifyContent:'center'}}>
-                        <Button style={styles.buttone} onPress={()=> this.handleSubmit()}>
-                            <Text style={{marginLeft: 45}}>Submit</Text>
+                        <Button block style={styles.buttone} onPress={()=> this.handleSubmit()}>
+                            <Text>Submit</Text>
                         </Button>
                     </ListItem>
                 </Form>
@@ -235,7 +309,7 @@ export default class TambahLapak6 extends Component {
 
 const styles = StyleSheet.create({
     buttone:{
-        width: '60%',
+        flex: 1,
         backgroundColor: "#b4424b"
     },
 
@@ -261,7 +335,7 @@ const styles = StyleSheet.create({
 
     fileChooser:{
         color: '#156af2',
-        marginLeft: -17
+        marginLeft: -15
     },
 
     cardHeader: {
@@ -278,5 +352,19 @@ const styles = StyleSheet.create({
 
     mainColor:{
         backgroundColor: '#dd5453'
+    },
+
+    avatarContainer: {
+        borderColor: "#9B9B9B",
+        borderWidth: 1 / PixelRatio.get(),
+        justifyContent: "center",
+        alignItems: "center"
+    },
+    avatar: {
+        borderRadius: 75,
+        width: 150,
+        height: 150,
+        justifyContent: "center",
+        alignItems: "center"
     }
 })
