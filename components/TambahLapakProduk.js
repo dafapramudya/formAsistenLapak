@@ -33,11 +33,11 @@ const uri = "https://api.backendless.com/A54546E5-6846-C9D4-FFAD-EFA9CB9E8A00/24
 export default class TambahLapakToko extends Component{
 
     state = {
-        selectedName: "",
-        selectedName2: "",
+        selectedIsNew: "",
+        selectedPreOrder: "",
         imageSource: null,
 
-        items: [{
+        items_isNew: [{
             id: 1,
             name: "Baru",
             value: true
@@ -49,7 +49,7 @@ export default class TambahLapakToko extends Component{
         },
         ],
 
-        items2: [{
+        items_preOrder: [{
             id: 1,
             name: "Ya",
             value: true
@@ -170,12 +170,12 @@ export default class TambahLapakToko extends Component{
 
                 <Content padder>
                 <Form>
-                    <Label style={styles.batasAtas}>Nama Produk (max 70 karakter)</Label>
+                    <Label style={styles.upperLimit}>Nama Produk (max 70 karakter)</Label>
                     <Item regular>
                         <Input onChangeText={(name) => this.setState({data: {...this.state.data, name}})}/>
                     </Item>
 
-                    <Label style={styles.batasAtas}>Gambar Produk</Label>
+                    <Label style={styles.upperLimit}>Gambar Produk</Label>
                         
                         { this.state.imageSource === null ? (
                             <Button transparent onPress={ this.selectPhotoTapped.bind(this)}>
@@ -203,22 +203,22 @@ export default class TambahLapakToko extends Component{
                         )
                         }
 
-                    <Label style={styles.batasAtas}>Harga</Label>
+                    <Label style={styles.upperLimit}>Harga</Label>
                     <Item regular>
                         <Input onChangeText={(price) => this.setState({ data: {...this.state.data, price}})} keyboardType = 'numeric'/>
                     </Item>
 
-                    <Label style={styles.batasAtas}>Pemesanan minimun/buah</Label>
+                    <Label style={styles.upperLimit}>Pemesanan minimun/buah</Label>
                     <Item regular>
                         <Input />
                     </Item>
 
-                    <Label style={styles.batasAtas}>Kondisi</Label>
+                    <Label style={styles.upperLimit}>Kondisi</Label>
                     
-                    {this.state.items.map((item, index)=> {
+                    {this.state.items_isNew.map((item, index)=> {
                         return(
-                            <ListItem key={item.id} style={styles.iteme}>
-                                <Radio selected = {item.name == this.state.selectedName ? true : false} onPress={()=> this.checkRadio2(item.name, item.value)} />
+                            <ListItem key={item.id} style={styles.items}>
+                                <Radio selected = {item.name == this.state.selectedIsNew ? true : false} onPress={()=> this.checkRadio2(item.name, item.value)} />
                                 <Body>
                                 <Label style={styles.labelSelect}>{item.name}</Label>
                                 </Body>
@@ -226,22 +226,22 @@ export default class TambahLapakToko extends Component{
                         )
                     } )}
 
-                    <Label style={styles.batasAtas}>Deskripsi Produk</Label>
+                    <Label style={styles.upperLimit}>Deskripsi Produk</Label>
                     <Item regular>
                         <Input onChangeText={(description) => this.setState({data: {...this.state.data, description}})}/>
                     </Item>
 
-                    <Label style={styles.batasAtas}>Berat (kg)</Label>
+                    <Label style={styles.upperLimit}>Berat (kg)</Label>
                     <Item regular>
                         <Input onChangeText={(weight) => this.setState({data: {...this.state.data, weight}})}/>
                     </Item>
 
-                    <Label style={styles.batasAtas}>Aktifkan preorder untuk waktu proses produksi yang lebih lama</Label>
+                    <Label style={styles.upperLimit}>Aktifkan preorder untuk waktu proses produksi yang lebih lama</Label>
 
-                    {this.state.items2.map((item, index)=> {
+                    {this.state.items_preOrder.map((item, index)=> {
                         return(
-                            <ListItem key={item.id} style={styles.iteme}>
-                                <Radio selected = {item.name == this.state.selectedName2 ? true : false} onPress={()=> this.checkRadio3(item.name, item.value)} />
+                            <ListItem key={item.id} style={styles.items}>
+                                <Radio selected = {item.name == this.state.selectedPreOrder ? true : false} onPress={()=> this.checkRadio3(item.name, item.value)} />
                                 <Body>
                                 <Label style={styles.labelSelect}>{item.name}</Label>
                                 </Body>
@@ -249,13 +249,13 @@ export default class TambahLapakToko extends Component{
                         )
                     } )}
 
-                    <Label style={styles.batasAtas}>Waktu Proses (wajib diisi untuk mengetahui lama produk diproses)</Label>
+                    <Label style={styles.upperLimit}>Waktu Proses (wajib diisi untuk mengetahui lama produk diproses)</Label>
                     <Item regular>
                         <Input onChangeText={(processing_days) => this.setState({data: {...this.state.data, processing_days}})}/>
                     </Item>
 
                     <ListItem style={{alignSelf:'center', justifyContent:'center'}}>
-                        <Button block style={styles.buttone} onPress={()=> this.handleSubmit()}>
+                        <Button block style={styles.submitBtn} onPress={()=> this.handleSubmit()}>
                             <Text>Submit</Text>
                         </Button>
                     </ListItem>
@@ -281,12 +281,12 @@ export default class TambahLapakToko extends Component{
 }
 
 const styles = StyleSheet.create({
-    buttone:{
+    submitBtn:{
         flex: 1,
         backgroundColor: "#b4424b"
     },
 
-    batasAtas:{
+    upperLimit:{
         marginTop: 10
     },
 
@@ -302,7 +302,7 @@ const styles = StyleSheet.create({
         margin: 20
     },
 
-    iteme:{
+    items:{
         marginLeft: -0.1
     },
 

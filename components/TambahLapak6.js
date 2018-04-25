@@ -33,10 +33,10 @@ export default class TambahLapak6 extends Component {
         imageSource: null,
         conditione: false,
         checkedName2: "",
-        selectedName: "",
-        selectedName2: "",
+        conditionChoice: "",
+        preOrderChoice: "",
         value: null,
-        items4: [{
+        conditionItems: [{
             id: 1,
             name: "Baru",
             value: true
@@ -48,7 +48,7 @@ export default class TambahLapak6 extends Component {
         },
         ],
 
-        items5: [{
+        preOrderItems: [{
             id: 1,
             name: "Ya",
             value: true
@@ -144,16 +144,16 @@ export default class TambahLapak6 extends Component {
 
 
 
-    checkRadio(name, is_new){
+    radioCondition(name, is_new){
         this.setState({
-            selectedName: name,
+            conditionChoice: name,
             data: {...this.state.data, is_new}
         })
     }
 
-    checkRadio2(name, is_preorder){
+    preOrderRadio(name, is_preorder){
         this.setState({
-            selectedName2: name,
+            preOrderChoice: name,
             data: {...this.state.data, is_preorder}
         })
     }
@@ -195,12 +195,12 @@ export default class TambahLapak6 extends Component {
                 </Card>
                 <Form>
                     <View style={{width: '95%', alignSelf:'center'}}>
-                        <Label style={styles.batasAtas}>Nama Produk (max 70 karakter)</Label>
+                        <Label style={styles.upperLimit}>Nama Produk (max 70 karakter)</Label>
                         <Item regular>
                             <Input onChangeText={(name) => this.setState({data: {...this.state.data, name}})}/>
                         </Item>
                         
-                        <Label style={styles.batasAtas}>Gambar Produk</Label>
+                        <Label style={styles.upperLimit}>Gambar Produk</Label>
                         
                             { this.state.imageSource === null ? (
                                 <Button transparent onPress={ this.selectPhotoTapped.bind(this)}>
@@ -229,22 +229,22 @@ export default class TambahLapak6 extends Component {
                             }
                         
 
-                        <Label style={styles.batasAtas}>Harga</Label>
+                        <Label style={styles.upperLimit}>Harga</Label>
                         <Item regular>
                             <Input onChangeText={(price) => this.setState({ data: {...this.state.data, price}})} keyboardType = 'numeric'/>
                         </Item>
 
-                        <Label style={styles.batasAtas}>Pemesanan minimun/buah</Label>
+                        <Label style={styles.upperLimit}>Pemesanan minimun/buah</Label>
                         <Item regular>
                             <Input />
                         </Item>
 
-                        <Label style={styles.batasAtas}>Kondisi</Label>
+                        <Label style={styles.upperLimit}>Kondisi</Label>
                         
-                        {this.state.items4.map((item, index)=> {
+                        {this.state.conditionItems.map((item, index)=> {
                             return(
-                                <ListItem key={item.name} style={styles.iteme}>
-                                    <Radio selected = {item.name == this.state.selectedName ? true : false} onPress={()=> this.checkRadio(item.name, item.value)} />
+                                <ListItem key={item.name} style={styles.items}>
+                                    <Radio selected = {item.name == this.state.conditionChoice ? true : false} onPress={()=> this.radioCondition(item.name, item.value)} />
                                     <Body>
                                         <Label style={styles.labelSelect}>{item.name}</Label>
                                     </Body>
@@ -252,22 +252,22 @@ export default class TambahLapak6 extends Component {
                             )
                         } )}
 
-                        <Label style={styles.batasAtas}>Deskripsi Produk</Label>
+                        <Label style={styles.upperLimit}>Deskripsi Produk</Label>
                         <Item regular>
                             <Input onChangeText={(description) => this.setState({data: {...this.state.data, description}})}/>
                         </Item>
 
-                        <Label style={styles.batasAtas}>Berat (kg)</Label>
+                        <Label style={styles.upperLimit}>Berat (kg)</Label>
                         <Item regular>
                             <Input onChangeText={(weight) => this.setState({data: {...this.state.data, weight}})}/>
                         </Item>
 
-                        <Label style={styles.batasAtas}>Aktifkan preorder untuk waktu proses produksi yang lebih lama</Label>
+                        <Label style={styles.upperLimit}>Aktifkan preorder untuk waktu proses produksi yang lebih lama</Label>
 
-                        {this.state.items5.map((item, index)=> {
+                        {this.state.preOrderItems.map((item, index)=> {
                             return(
-                                <ListItem key={item.name} style={styles.iteme}>
-                                    <Radio selected = {item.name == this.state.selectedName2 ? true : false} onPress={()=> this.checkRadio2(item.name, item.value)} />
+                                <ListItem key={item.name} style={styles.items}>
+                                    <Radio selected = {item.name == this.state.preOrderChoice ? true : false} onPress={()=> this.preOrderRadio(item.name, item.value)} />
                                     <Body>
                                         <Label style={styles.labelSelect}>{item.name}</Label>
                                     </Body>
@@ -275,14 +275,14 @@ export default class TambahLapak6 extends Component {
                             )
                         } )}
 
-                        <Label style={styles.batasAtas}>Waktu Proses (wajib diisi untuk mengetahui lama produk diproses)</Label>
+                        <Label style={styles.upperLimit}>Waktu Proses (wajib diisi untuk mengetahui lama produk diproses)</Label>
                         <Item regular>
                             <Input onChangeText={(processing_days) => this.setState({data: {...this.state.data, processing_days}})}/>
                         </Item>
                     </View>
 
                     <ListItem style={{alignSelf:'center', justifyContent:'center'}}>
-                        <Button block style={styles.buttone} onPress={()=> this.handleSubmit()}>
+                        <Button block style={styles.submitBtn} onPress={()=> this.handleSubmit()}>
                             <Text>Submit</Text>
                         </Button>
                     </ListItem>
@@ -308,16 +308,16 @@ export default class TambahLapak6 extends Component {
 }
 
 const styles = StyleSheet.create({
-    buttone:{
+    submitBtn:{
         flex: 1,
         backgroundColor: "#b4424b"
     },
 
-    iteme:{
+    items:{
         marginLeft: -0.1
     },
 
-    batasAtas:{
+    upperLimit:{
         marginTop: 10
     },
 

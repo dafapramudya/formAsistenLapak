@@ -31,10 +31,10 @@ const uri = "https://api.backendless.com/A54546E5-6846-C9D4-FFAD-EFA9CB9E8A00/24
 export default class AsistenLapak extends Component{
 
     state = {
-        selectedName: "",
-        selectedName2: "",
+        selectedTypeShipping: "",
+        selectedTypePacking: "",
 
-        items: [{
+        typeOfShipping: [{
             id: 1,
             name: "JNE-Reguler"
         },
@@ -59,7 +59,7 @@ export default class AsistenLapak extends Component{
             name: "Others"
         }
         ],
-        items2: [{
+        itemsPacking: [{
             id: 1,
             name: "Electronic"
         },
@@ -91,18 +91,18 @@ export default class AsistenLapak extends Component{
         })
     }
 
-    checkRadio(name, id){
+    checkRadioShipping(name, id){
         this.setState({
-            selectedName: name,
-            radio1: id
+            selectedTypeShipping: name,
+            radioShiping: id
 
         })
     }
 
-    checkRadio2(typeOfPacking, id){
+    checkRadioPacking(typeOfPacking, id){
         this.setState({
-            selectedName2: typeOfPacking,
-            radio2: id,
+            selectedTypePacking: typeOfPacking,
+            radioPacking: id,
             data: {...this.state.data, typeOfPacking}
         })
     }
@@ -119,32 +119,32 @@ export default class AsistenLapak extends Component{
                 </Header>
                 <Content padder>
                 <Form>
-                    <Label style={styles.batasAtas}>Produk Pesanan</Label>
+                    <Label style={styles.upperLimit}>Produk Pesanan</Label>
                     <Item regular>
                         <Input onChangeText={(orderProduct) => this.setState({data: {...this.state.data, orderProduct}})}/>
                     </Item>
 
-                    <Label style={styles.batasAtas}>Stock Availability</Label>
+                    <Label style={styles.upperLimit}>Stock Availability</Label>
                     <Item regular>
                         <Input onChangeText={(stockAvailability) => this.setState({data: {...this.state.data, stockAvailability}})}/>
                     </Item>
 
-                    <Label style={styles.batasAtas}>Special Request</Label>
+                    <Label style={styles.upperLimit}>Special Request</Label>
                     <Item regular>
                         <Input onChangeText={(specialRequest) => this.setState({data:{...this.state.data, specialRequest}})}/>
                     </Item>
                     
-                    <Label style={styles.batasAtas}>Order Number</Label>
+                    <Label style={styles.upperLimit}>Order Number</Label>
                     <Item regular>
                         <Input onChangeText={(orderNumber) => this.setState({data:{...this.state.data, orderNumber}})}/>
                     </Item>
                     
-                    <Label style={styles.batasAtas}>Type of Shipping</Label>
+                    <Label style={styles.upperLimit}>Type of Shipping</Label>
                     
-                    {this.state.items.map((item, index)=> {
+                    {this.state.typeOfShipping.map((item, index)=> {
                         return(
                             <ListItem key={item.name} style={styles.items}>
-                                <Radio selected = {item.name == this.state.selectedName ? true : false} onPress={()=> this.checkRadio(item.name, item.id)} />
+                                <Radio selected = {item.name == this.state.selectedTypeShipping ? true : false} onPress={()=> this.checkRadioShipping(item.name, item.id)} />
                                 <Body>
                                     <Label style={styles.labelSelect}>{item.name}</Label>
                                 </Body>
@@ -152,12 +152,12 @@ export default class AsistenLapak extends Component{
                         )
                     } )}
 
-                    <Label style={styles.batasAtas}>Type of Packing</Label>
+                    <Label style={styles.upperLimit}>Type of Packing</Label>
                     
-                    {this.state.items2.map((item, index)=> {
+                    {this.state.itemsPacking.map((item, index)=> {
                         return(
                             <ListItem key={item.name} style={styles.items}>
-                                <Radio selected = {item.name == this.state.selectedName2 ? true : false} onPress={()=> this.checkRadio2(item.name, item.id)} />
+                                <Radio selected = {item.name == this.state.selectedTypePacking ? true : false} onPress={()=> this.checkRadioPacking(item.name, item.id)} />
                                 <Body>
                                     <Label style={styles.labelSelect}>{item.name}</Label>
                                 </Body>
@@ -165,20 +165,20 @@ export default class AsistenLapak extends Component{
                         )
                     } )}
 
-                    <Label style={styles.batasAtas}>Name of Customer</Label>
+                    <Label style={styles.upperLimit}>Name of Customer</Label>
                     <Item regular>
                         <Input onChangeText={(name) => this.setState({data:{...this.state.data, name}})}/>
                     </Item>
 
-                    <Label style={styles.batasAtas}>Customer Phone Number</Label>
+                    <Label style={styles.upperLimit}>Customer Phone Number</Label>
                     <Item regular>
                         <Input onChangeText={(mobile_phone) => this.setState({data: {...this.state.data, mobile_phone}})}/>
                     </Item>
 
-                    <Label style={styles.batasAtas}>Customer Address</Label>
+                    <Label style={styles.upperLimit}>Customer Address</Label>
                     <Textarea rowSpan={5} bordered onChangeText={(address) => this.setState({data: {...this.state.data, address}})}/>
 
-                    <Label style={styles.batasAtas}>Nearest Courier Location</Label>
+                    <Label style={styles.upperLimit}>Nearest Courier Location</Label>
                     <Item regular>
                         <Input onChangeText={(nearestCourier) => this.setState({data: {...this.state.data, nearestCourier}})} />
                     </Item>
@@ -215,7 +215,7 @@ const styles = StyleSheet.create({
         flex: 1
     },
 
-    batasAtas:{
+    upperLimit:{
         marginTop: 10
     },
 
