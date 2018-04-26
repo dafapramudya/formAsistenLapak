@@ -28,7 +28,7 @@ import { StyleSheet, View, TouchableOpacity, StatusBar, Image, PixelRatio, AppRe
 import axios from 'axios';
 import ImagePicker from 'react-native-image-picker';
 
-const uri = "https://api.backendless.com/A54546E5-6846-C9D4-FFAD-EFA9CB9E8A00/241A72A5-2C8A-1DB8-FFAF-0F46BA4A8100/data";
+const uri = "https://api.backendless.com/A54546E5-6846-C9D4-FFAD-EFA9CB9E8A00/241A72A5-2C8A-1DB8-FFAF-0F46BA4A8100";
 
 export default class TambahLapakToko extends Component{
 
@@ -116,22 +116,22 @@ export default class TambahLapakToko extends Component{
         });
       }
 
-    checkRadio2(name, is_new){
+    checkIsNew(name, is_new){
         this.setState({
-            selectedName: name,
+            selectedIsNew: name,
             data: {...this.state.data, is_new}
         })
     }
 
-    checkRadio3(name, is_preorder){
+    checkIsPreOrder(name, is_preorder){
         this.setState({
-            selectedName2: name,
+            selectedPreOrder: name,
             data: {...this.state.data, is_preorder}
         })
     }
 
     allProduct(){
-        axios.get(`${uri}/products?sortBy=created%20desc`).then(result => {
+        axios.get(`${uri}/data/products?sortBy=created%20desc`).then(result => {
             this.setState({
                 data: result.data
             })
@@ -148,7 +148,7 @@ export default class TambahLapakToko extends Component{
 
         // alert(JSON.stringify(data));
 
-        axios.post(`${uri}/products`, data).then(result => {
+        axios.post(`${uri}/data/products`, data).then(result => {
             if(result.data){
                 this.allProduct,
                 alert("Succes!")
@@ -210,7 +210,7 @@ export default class TambahLapakToko extends Component{
 
                     <Label style={styles.upperLimit}>Pemesanan minimun/buah</Label>
                     <Item regular>
-                        <Input />
+                        <Input keyboardType = 'numeric'/>
                     </Item>
 
                     <Label style={styles.upperLimit}>Kondisi</Label>
@@ -218,7 +218,7 @@ export default class TambahLapakToko extends Component{
                     {this.state.items_isNew.map((item, index)=> {
                         return(
                             <ListItem key={item.id} style={styles.items}>
-                                <Radio selected = {item.name == this.state.selectedIsNew ? true : false} onPress={()=> this.checkRadio2(item.name, item.value)} />
+                                <Radio selected = {item.name == this.state.selectedIsNew ? true : false} onPress={()=> this.checkIsNew(item.name, item.value)} />
                                 <Body>
                                 <Label style={styles.labelSelect}>{item.name}</Label>
                                 </Body>
@@ -227,13 +227,11 @@ export default class TambahLapakToko extends Component{
                     } )}
 
                     <Label style={styles.upperLimit}>Deskripsi Produk</Label>
-                    <Item regular>
-                        <Input onChangeText={(description) => this.setState({data: {...this.state.data, description}})}/>
-                    </Item>
+                    <Textarea rowSpan={5} bordered onChangeText={(description) => this.setState({data: {...this.state.data, description}})}/>
 
                     <Label style={styles.upperLimit}>Berat (kg)</Label>
                     <Item regular>
-                        <Input onChangeText={(weight) => this.setState({data: {...this.state.data, weight}})}/>
+                        <Input onChangeText={(weight) => this.setState({data: {...this.state.data, weight}})} keyboardType = 'numeric'/>
                     </Item>
 
                     <Label style={styles.upperLimit}>Aktifkan preorder untuk waktu proses produksi yang lebih lama</Label>
@@ -241,7 +239,7 @@ export default class TambahLapakToko extends Component{
                     {this.state.items_preOrder.map((item, index)=> {
                         return(
                             <ListItem key={item.id} style={styles.items}>
-                                <Radio selected = {item.name == this.state.selectedPreOrder ? true : false} onPress={()=> this.checkRadio3(item.name, item.value)} />
+                                <Radio selected = {item.name == this.state.selectedPreOrder ? true : false} onPress={()=> this.checkIsPreOrder(item.name, item.value)} />
                                 <Body>
                                 <Label style={styles.labelSelect}>{item.name}</Label>
                                 </Body>
@@ -251,7 +249,7 @@ export default class TambahLapakToko extends Component{
 
                     <Label style={styles.upperLimit}>Waktu Proses (wajib diisi untuk mengetahui lama produk diproses)</Label>
                     <Item regular>
-                        <Input onChangeText={(processing_days) => this.setState({data: {...this.state.data, processing_days}})}/>
+                        <Input onChangeText={(processing_days) => this.setState({data: {...this.state.data, processing_days}})} keyboardType = 'numeric'/>
                     </Item>
 
                     <ListItem style={{alignSelf:'center', justifyContent:'center'}}>

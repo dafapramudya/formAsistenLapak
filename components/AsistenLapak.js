@@ -34,6 +34,10 @@ export default class AsistenLapak extends Component{
         selectedTypeShipping: "",
         selectedTypePacking: "",
 
+        finalDS: "",
+
+        deliveryServices: [],
+
         typeOfShipping: [{
             id: 1,
             name: "JNE-Reguler"
@@ -76,26 +80,52 @@ export default class AsistenLapak extends Component{
         data:{}
     }
 
-    allTransactions(){
-        axios.get(`${uri}/transactions?sortBy=created%20desc`).then(result => {
-            data: result.data
+    allDeliveryServices(){
+        axios.get(`${uri}/delivery_services?pageSize=100&offset=0&sortBy=created%20desc`).then(result => {
+            this.setState({
+                deliveryServices: result.data
+            })
         })
     }
 
     handleSubmit(){
+
+        const storeRelation = [
+            //""
+            //Get objectId from store, insert to parameter 2
+        ]
+
+        const typeOfShipp = [
+            this.state.finalDS
+        ]
+
         axios.post(`${uri}/transactions`, this.state.data).then(result => {
             if(result.data){
-                this.allTransactions(),
-                alert("Success")
+                axios.post(`${uri}/transactions/${result.data.objectId}/typeOfShipping:delivery_services:1`, typeOfShipp).then(result2 => {
+                    alert("Success")
+                })  
             }
         })
+
+        //Use it when store objectId is ready
+        // axios.post(`${uri}/transactions`, this.state.data).then(result => {
+        //     if(result.data){
+        //         axios.post(`${uri}/transactions/${result.objectId}/storeId:stores:1`).then(result2 => {
+        //             if(result2.data){
+        //                 axios.post(`${uri}/transactions/${result2.objectId}/typeOfShipping:delivery_services:1`, typeOfShipp).then(result => {
+        //                     alert("Success")
+        //                 })
+        //             }
+        //         })   
+        //     }
+        // })
     }
 
     checkRadioShipping(name, id){
         this.setState({
             selectedTypeShipping: name,
-            radioShiping: id
-
+            radioShiping: id,
+            finalDS: id
         })
     }
 
@@ -105,6 +135,10 @@ export default class AsistenLapak extends Component{
             radioPacking: id,
             data: {...this.state.data, typeOfPacking}
         })
+    }
+
+    componentDidMount(){
+        this.allDeliveryServices()
     }
 
     render(){
@@ -126,7 +160,7 @@ export default class AsistenLapak extends Component{
 
                     <Label style={styles.upperLimit}>Stock Availability</Label>
                     <Item regular>
-                        <Input onChangeText={(stockAvailability) => this.setState({data: {...this.state.data, stockAvailability}})}/>
+                        <Input onChangeText={(stockAvailability) => this.setState({data: {...this.state.data, stockAvailability}})} keyboardType = 'numeric'/>
                     </Item>
 
                     <Label style={styles.upperLimit}>Special Request</Label>
@@ -136,21 +170,21 @@ export default class AsistenLapak extends Component{
                     
                     <Label style={styles.upperLimit}>Order Number</Label>
                     <Item regular>
-                        <Input onChangeText={(orderNumber) => this.setState({data:{...this.state.data, orderNumber}})}/>
+                        <Input onChangeText={(orderNumber) => this.setState({data:{...this.state.data, orderNumber}})} keyboardType = 'numeric'/>
                     </Item>
                     
                     <Label style={styles.upperLimit}>Type of Shipping</Label>
-                    
-                    {this.state.typeOfShipping.map((item, index)=> {
+
+                    {this.state.deliveryServices.map((item) => {
                         return(
-                            <ListItem key={item.name} style={styles.items}>
-                                <Radio selected = {item.name == this.state.selectedTypeShipping ? true : false} onPress={()=> this.checkRadioShipping(item.name, item.id)} />
+                            <ListItem key={item.objectId} style={styles.items}>
+                                <Radio selected = {item.name == this.state.selectedTypeShipping ? true : false} onPress={()=> this.checkRadioShipping(item.name, item.objectId)} />
                                 <Body>
                                     <Label style={styles.labelSelect}>{item.name}</Label>
                                 </Body>
                             </ListItem>
                         )
-                    } )}
+                    })}
 
                     <Label style={styles.upperLimit}>Type of Packing</Label>
                     
@@ -172,7 +206,7 @@ export default class AsistenLapak extends Component{
 
                     <Label style={styles.upperLimit}>Customer Phone Number</Label>
                     <Item regular>
-                        <Input onChangeText={(mobile_phone) => this.setState({data: {...this.state.data, mobile_phone}})}/>
+                        <Input onChangeText={(mobile_phone) => this.setState({data: {...this.state.data, mobile_phone}})} keyboardType = 'numeric'/>
                     </Item>
 
                     <Label style={styles.upperLimit}>Customer Address</Label>

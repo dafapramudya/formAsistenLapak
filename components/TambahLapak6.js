@@ -131,14 +131,37 @@ export default class TambahLapak6 extends Component {
             processing_days: Number(this.state.data.processing_days)
         }
 
+        // const dataRelationADS = [
+            //Get objectID from available_delivery_services, then use it in parameter 2 at axios.post avalibale_delivery_services 
+        // ],
+
+        // const dataRelationStores = [
+            //GET objectID from stores, then user it in parameter 2 at axios.post store
+        // ]
+
         // alert(JSON.stringify(data));
 
         axios.post(`${uri}/data/products`, data).then(result => {
             if(result.data){
-                this.allProduct,
-                alert("Succes!")
+                alert("Success!")
             }
         })
+
+        //Use it when object dataRelationASD and dataRelationStore is ready
+        // axios.post(`${uri}/data/products`, data).then(result => {
+        //     if(result.data){
+        //         axios.post(`${uri}/data/products/${result.data.objectId}/available_delivery_services:delivery_services:n`).then(result2 => {
+        //             if(result2.data){
+        //                 axios.post(`${uri}/data/products/${result.data.objectId}/store:stores:1`).then(result3 => {
+        //                     if(result3.data){
+        //                         this.allProduct(),
+        //                         alert("Succes!")
+        //                     }
+        //                 })
+        //             }
+        //         })
+        //     }
+        // })
 
     }
 
@@ -236,7 +259,7 @@ export default class TambahLapak6 extends Component {
 
                         <Label style={styles.upperLimit}>Pemesanan minimun/buah</Label>
                         <Item regular>
-                            <Input />
+                            <Input keyboardType = 'numeric'/>
                         </Item>
 
                         <Label style={styles.upperLimit}>Kondisi</Label>
@@ -259,7 +282,7 @@ export default class TambahLapak6 extends Component {
 
                         <Label style={styles.upperLimit}>Berat (kg)</Label>
                         <Item regular>
-                            <Input onChangeText={(weight) => this.setState({data: {...this.state.data, weight}})}/>
+                            <Input onChangeText={(weight) => this.setState({data: {...this.state.data, weight}})} keyboardType = 'numeric'/>
                         </Item>
 
                         <Label style={styles.upperLimit}>Aktifkan preorder untuk waktu proses produksi yang lebih lama</Label>
@@ -277,7 +300,7 @@ export default class TambahLapak6 extends Component {
 
                         <Label style={styles.upperLimit}>Waktu Proses (wajib diisi untuk mengetahui lama produk diproses)</Label>
                         <Item regular>
-                            <Input onChangeText={(processing_days) => this.setState({data: {...this.state.data, processing_days}})}/>
+                            <Input onChangeText={(processing_days) => this.setState({data: {...this.state.data, processing_days}})} keyboardType = 'numeric'/>
                         </Item>
                     </View>
 

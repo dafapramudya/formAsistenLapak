@@ -2,8 +2,6 @@ import React from 'react';
 import { StackNavigator } from 'react-navigation';
 import { Button, Text } from 'native-base';
 
-import Login from './components/LoginRegister/Login';
-import SignUp from './components/LoginRegister/SignUp';
 import AsistenLapak from './components/AsistenLapak';
 import TambahLapakToko from './components/TambahLapakToko';
 import NjajalPassing from './components/NjajalPassing';
@@ -18,13 +16,13 @@ import NjajalImagePicker from './components/NjajalImagePicker'
 
 const App = StackNavigator({
 
-    RouteLogin:{
-        screen: Login
-    },
+    // RouteLogin:{
+    //     screen: Login
+    // },
 
-    RouteSignUp:{
-        screen: SignUp
-    },
+    // RouteSignUp:{
+    //     screen: SignUp
+    // },
 
     RouteTambahLapakToko: {
         screen: TambahLapakToko

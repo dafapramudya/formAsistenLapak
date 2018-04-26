@@ -28,7 +28,7 @@ import { StyleSheet, View, TouchableOpacity, StatusBar, Image, PixelRatio, AppRe
 import axios from 'axios';
 import ImagePicker from 'react-native-image-picker';
 
-const uri = "https://api.backendless.com/A54546E5-6846-C9D4-FFAD-EFA9CB9E8A00/241A72A5-2C8A-1DB8-FFAF-0F46BA4A8100/data";
+const uri = "https://api.backendless.com/A54546E5-6846-C9D4-FFAD-EFA9CB9E8A00/241A72A5-2C8A-1DB8-FFAF-0F46BA4A8100";
 
 export default class TambahLapakToko extends Component{
 
@@ -246,7 +246,7 @@ export default class TambahLapakToko extends Component{
                 body: data
             }).then(result => {
                 this.setState({
-                    data: {...this.state.data, image: result.url}
+                    data: {...this.state.data, logo: result.url}
                 })
             })
           }
@@ -303,35 +303,44 @@ export default class TambahLapakToko extends Component{
     
       }
 
-      allStores(){
-          axios.get(`${uri}/stores?sortBy=created%20desc`).then(result => {
-              this.setState({
-                  data: result.data
-              })
-          })    
-      }
-
       allDeliveryServices(){
-          axios.get(`${uri}/delivery_services?sortBy=created%20desc`).then(result => {
+          axios.get(`${uri}/data/delivery_services?pageSize=100&offset=0&sortBy=created%20desc`).then(result => {
               this.setState({
                   deliveryServices: result.data
               })
           })
       }
 
-      handleSubmit(){
-          axios.post(`${uri}/stores`, this.state.data).then(result => {
-              if(result.data){
-                  this.allStores()
-                  alert("Success!")
-              }
-          })
-      }
+    handleSubmit(){
 
-      componentDidMount(){
-          this.allDeliveryServices(),
-          this.allStores()
-      }
+        const assistantRelation = [
+            //GET objectID from user login
+            //For Example:
+            //// "AFCD2A0E-3C7C-093E-FFB4-16C27896D200"
+        ]
+
+        axios.post(`${uri}/data/stores`, this.state.data).then(result => {
+            if(result.data){
+                alert("Succes!")
+            }
+        })
+
+        //Use this if yout assistant object id is ready
+        // axios.post(`${uri}/data/stores`, this.state.data).then(result => {
+        //     if(result.data){
+
+        //         axios.post(`${uri}/data/stores/${result.data.objectId}/assistant:Users:1`, assistantRelation).then(result2 => {
+        //             if(result2.data){
+        //                 alert("Success!")
+        //             }
+        //         })
+        //     }
+        // })
+    }
+
+    componentDidMount(){
+        this.allDeliveryServices()
+    }
 
     render(){
         return(
@@ -396,7 +405,7 @@ export default class TambahLapakToko extends Component{
 
                     <Label style={styles.upperLimit}>Kode Pos</Label>
                     <Item regular>
-                        <Input onChangeText={(postal_code) => this.setState({data: {...this.state.data, postal_code}})}/>
+                        <Input onChangeText={(postal_code) => this.setState({data: {...this.state.data, postal_code}})} keyboardType = 'numeric'/>
                     </Item>
 
                     <Label style={styles.upperLimit}>Situs Web</Label>
@@ -406,7 +415,7 @@ export default class TambahLapakToko extends Component{
 
                     <Label style={styles.upperLimit}>No Telp</Label>
                     <Item regular>
-                        <Input onChangeText={(mobile_phone) => this.setState({data: {...this.state.data, mobile_phone}})}/>
+                        <Input onChangeText={(mobile_phone) => this.setState({data: {...this.state.data, mobile_phone}})} keyboardType = 'numeric'/>
                     </Item>
 
                     <Label style={styles.upperLimit}>Alamat Email</Label>
@@ -421,7 +430,7 @@ export default class TambahLapakToko extends Component{
 
                     <Label style={styles.upperLimit}>Nomor Rekening</Label>
                     <Item regular>
-                    <Input onChangeText={(bank_account) => this.setState({ data: {...this.state.data, bank_account} })} />
+                    <Input onChangeText={(bank_account) => this.setState({ data: {...this.state.data, bank_account} })} keyboardType = 'numeric'/>
                     </Item>
 
                     <Label style={styles.upperLimit}>Nama Pemilik Akun Bank</Label>
